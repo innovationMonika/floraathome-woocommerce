@@ -383,7 +383,53 @@ class florahome_Admin {
                 )
 
             ) 
-        ));
+		));
+		
+		//$productcount = 0;
+		$productList = [];
+		$calculateTime = true;
+		$timeRemaining = 90;
+		if (count($products_pending) > 0) {
+			//set_time_limit(90); //If time limit does not work
+			set_time_limit(0);
+			foreach ($products_pending as $productitem) {
+				/* if there is a restriction when executing the time 
+				*
+				$pendingImages = get_post_meta($productitem->ID, 'pending_images');
+				$productcount = count(json_decode($pendingImages));
+				if ($calculateTime) {
+					$starttime = microtime(true);
+					update_product_image($productitem);
+					$timediff = microttime(true) - $starttime;
+					$perItemtime = $timediff/$productcount;
+					$calculateTime = false;
+					$timeRemaining -= $timediff;
+				} else {
+					$estimatedtime = $perItemtime * $productcount ;
+
+
+				}*/
+
+				//Alternate if unlimited time works
+				error_log('In Product Image Download');
+				update_product_image($productitem);
+
+
+				
+
+
+			}
+
+			add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.',null,false); 
+
+
+
+		} else {
+
+			//unlink cron if no products found
+			wp_clear_scheduled_hook('task_flora_image_import');
+
+		}
 
 
 	}

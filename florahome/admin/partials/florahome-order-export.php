@@ -169,6 +169,13 @@ function fah_webshop_order_prepare($order) {
 
     } 
 
+    
+    if ($order->get_customer_note()) {
+       
+        $orderExportObj->remark = $order->get_customer_note();
+
+    } 
+
     if ($order->get_shipping_company()) {
         $orderExportObj->companyname = $order->get_shipping_company();
 

@@ -8,9 +8,11 @@
      * @package    florahome
      * @subpackage florahome/admin/partials
      */
-
+    require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+    require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+    require_once(ABSPATH . "wp-admin" . '/includes/image.php');
     function save_external_files( $post_id = 0 , $url = null ){
-
+        
         $data = array();
 
         if( $url == null ){
@@ -87,7 +89,7 @@
             }
 
             // do the validation and storage stuff			
-
+            
             $id = media_handle_sideload( $file_array, $post_id , $desc = null );
 
             $local_url = wp_get_attachment_url( $id );

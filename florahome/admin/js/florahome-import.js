@@ -6,6 +6,7 @@
 		$( document ).ready( function() {
 				var $product_screen = $( '.edit-php.post-type-product' );
 				var $title_action   = $product_screen.find( '.page-title-action:last' );
+				var $blank_action   = $product_screen.find( '.woocommerce-BlankState-cta :last' );
 				var $blankslate     = $product_screen.find( '.woocommerce-BlankState' );
 
 				var buttonName = 'Import Flora Products';

@@ -43,7 +43,31 @@ function flora_admin_notice () {
         }
    
     }
+
+    if (get_option( 'fah_download_success_images' )) {
+        ?>
+        <div class="notice notice-info is-dismissible">
+            <p><?php _e(get_option( 'fah_download_success_images' ), 'default' ); ?></p>
+        </div>
+        <?php
+        delete_option('fah_download_success_images');
+
+
+    }
     
+
+    
+    if (get_option( 'fah_full_update_success' )) {
+        ?>
+        <div class="notice notice-info is-dismissible">
+            <p><?php _e(get_option( 'fah_full_update_success' ), 'default' ); ?></p>
+        </div>
+        <?php
+        delete_option('fah_full_update_success');
+
+
+    }
+
 }
 
 add_action('admin_notices', 'flora_admin_notice');

@@ -245,14 +245,26 @@ function fah_order_status_render() {
 
 }
 
-// Add custom Schedule of 5 Mins
+// Add custom Schedule of 5 Mins & 2 mins
+
 function my_cron_schedules($schedules){
     if(!isset($schedules["5min"])){
         $schedules["5min"] = array(
             'interval' => 5*60,
             'display' => __('Once every 5 minutes'));
     }
-   
+	
+	if(!isset($schedules["5min"])){
+        $schedules["2min"] = array(
+            'interval' => 2*60,
+            'display' => __('Once every 2 minutes'));
+	}
+	
+	if(!isset($schedules["10min"])){
+        $schedules["2min"] = array(
+            'interval' => 10*60,
+            'display' => __('Once every 10 minutes'));
+    }
     return $schedules;
 }
 add_filter('cron_schedules','my_cron_schedules');
