@@ -1,0 +1,25 @@
+/**
+ * All of the CSS 
+ */
+ .flora-settings {
+    background-color: white;
+    padding: 2px 5px 0px 10px;
+    width: 95%;
+    margin-bottom: 10px;
+}
+
+.flora-field {
+    width: 75%;
+}
+
+.flora-settings > h2 {
+
+    font-size: 25px;
+
+}
+
+.flora-set-header {
+
+    font-size: 25px;
+
+}
