@@ -342,7 +342,7 @@ function fah_webshop_recent_products_date($daterecent) {
                 if (!empty(wc_get_product_id_by_sku($floraDelProduct->productcode))) {
                     $floraWooProductId = wc_get_product_id_by_sku($floraDelProduct->productcode);
                     $floraWooDelProduct = wc_get_product($floraWooProductId);
-                    if ($floraWooProduct->get_status('view') != 'draft')
+                    if ($floraWooDelProduct->get_status('view') != 'draft')
                         $actualDeleted++;
                     $floraWooDelProduct->set_status('draft');
                     $floraWooDelProduct->save();
@@ -408,7 +408,9 @@ function fah_webshop_recent_products_date($daterecent) {
 
             // Add Cron to download product images
 
-            wp_schedule_event(time(), '10min', 'task_flora_image_import');
+            if ( $time = wp_next_scheduled( 'task_flora_image_import' ) )
+       					 wp_unschedule_event( $time, 'task_flora_image_import' );
+            wp_schedule_event(time(), 'hourly', 'task_flora_image_import');
                 
         }
         if($actualAdded > 0 || $actualUpdated > 0 || $actualDeleted > 0 ) {
