@@ -57,10 +57,11 @@ class florahome_Activator {
 			'height',
 			'purchaseprice',
 			'linnaeusname', 
-			'numberofprovider',
+			'numberperorder',
 			'specifications', 
 			'grower', 
 			'aboutgrower',
+			'caretips',
 			'branches' 
 			
 		];

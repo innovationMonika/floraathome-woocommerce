@@ -267,8 +267,8 @@ class florahome_Admin {
             'meta_query' => array(
                 array(
                     'key' => 'fah_orderExport',
-                    'value' => 'Exported',
-                    'compare' => '!='
+                    'value' => array('Exported','No Flora@home Products','No Products for export'),
+                    'compare' => 'NOT IN'
                 )
 
             ) 
@@ -330,9 +330,11 @@ class florahome_Admin {
 
 		
 		if (get_option( 'fah_select_export_run' )) {
-			update_option('fah_select_export_run',date('Y-m-d h:i:s'));
+			//update_option('fah_select_export_run',date('Y-m-d h:i:s'));
+			update_option('fah_select_export_run',current_time('mysql',false));
 		} else 
-			add_option('fah_select_export_run', date('Y-m-d h:i:s'),null,false);
+			//add_option('fah_select_export_run', date('Y-m-d h:i:s'),null,false);
+			add_option('fah_select_export_run', current_time('mysql',false),null,false);
 
 
 	}
@@ -363,9 +365,12 @@ class florahome_Admin {
 
 			if (get_option( 'fah_select_import_run' )) {
 				
-				update_option('fah_select_import_run',date('Y-m-d h:i:s'));
+				//update_option('fah_select_import_run',date('Y-m-d h:i:s'));
+				update_option('fah_select_import_run',current_time('mysql',false));
+
 			} else 
-				add_option('fah_select_import_run', date('Y-m-d h:i:s'),null,false);
+				//add_option('fah_select_import_run', date('Y-m-d h:i:s'),null,false);
+				add_option('fah_select_import_run', current_time('mysql',false),null,false);
 			
 		
 

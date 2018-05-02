@@ -89,7 +89,7 @@ function fah_webshop_get_products() {
             error_log('ADD SCHEDULE');
             if ( $time = wp_next_scheduled( 'task_flora_image_import' ) )
        					 wp_unschedule_event( $time, 'task_flora_image_import' );
-            wp_schedule_event(time(), 'hourly', 'task_flora_image_import');
+            wp_schedule_event(time(), '5min', 'task_flora_image_import');
                 
         }
         
@@ -410,7 +410,7 @@ function fah_webshop_recent_products_date($daterecent) {
 
             if ( $time = wp_next_scheduled( 'task_flora_image_import' ) )
        					 wp_unschedule_event( $time, 'task_flora_image_import' );
-            wp_schedule_event(time(), 'hourly', 'task_flora_image_import');
+            wp_schedule_event(time(), '5min', 'task_flora_image_import');
                 
         }
         if($actualAdded > 0 || $actualUpdated > 0 || $actualDeleted > 0 ) {
@@ -506,14 +506,14 @@ function show_progress_import ($total, $imported , $skipped) {
 function update_product_image ($product) {
     
     $jsonImage = get_post_meta($product->ID, 'pending_images');
-    error_log(print_r($jsonImage,true));
+    //error_log(print_r($jsonImage,true));
     
 
     if(!$jsonImage)
         return;
     
     
-    delete_post_meta($product->ID, 'pending_images');
+    
     add_post_meta($product->ID, 'download_flora_images', $jsonImage);
     
     
@@ -524,7 +524,7 @@ function update_product_image ($product) {
     if(count($productImages) > 0 ) {
         $imageIds = [];
         foreach($productImages as $productImage) {
-            error_log(print_r( $productImage, true));
+            //error_log(print_r( $productImage, true));
             $upload = save_external_files(0,$productImage);
             if ($upload['result'] == 'success') {
                 $imageIds[] = $upload['image_id'];
@@ -539,7 +539,15 @@ function update_product_image ($product) {
         if (count($imageIds) > 0) {
             $floraWooProduct->set_gallery_image_ids($imageIds);
             $floraWooProduct->set_image_id($imageIds[0]);
-            $floraWooProduct->save();
+            if (get_post_meta($product->ID, 'pending_images')) {
+                $floraWooProduct->save();
+                delete_post_meta($product->ID, 'pending_images');
+                if (!get_option( 'fah_download_success_images' ))   
+				    add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.',null,false); 
+
+
+            }
+               
             $imageIds = json_encode($imageIds);
 
             add_post_meta($product->ID, 'set_flora_images', $imageIds);

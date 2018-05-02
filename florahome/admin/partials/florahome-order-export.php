@@ -97,6 +97,69 @@ function fah_webshop_order_prepare($order) {
     $orderExportObj->referenceWebshop =  $options[fah_webshop_ref];
     $orderExportObj->referenceCustomer = $order->get_order_number();
     
+    $orderExportItems = [];
+
+    if(count($order->get_items('line_item')) >0 ) {
+        
+        foreach ($order->get_items('line_item') as $orderItem) {
+           
+
+            if ($orderItem['product_id']) {
+                
+                $orderProduct = new WC_Product($orderItem['product_id']);
+                
+                if(!$orderProduct->get_meta('_flora_product'))
+                    continue;
+
+                if( $orderProduct->get_sku()) {
+                    
+                    $fahOrderLineItem = new florahome_Order_item();
+                    $fahOrderLineItem->productcode = $orderProduct->get_sku();
+                    $fahOrderLineItem->quantity = $orderItem['qty'];
+                    
+
+                    $orderExportItems[] = $fahOrderLineItem;
+
+                } else {
+                    
+                    $orderprepare = 'Ordered product does not have SKU';
+                    return array($prepare, $orderprepare);
+
+                }
+                
+
+
+            } else {
+                
+                $orderprepare = 'Error getting product Line item';
+                return array($prepare, $orderprepare);
+                
+
+            }
+           
+
+            
+
+
+        }
+       
+        if (count($orderExportItems) > 0 )
+            $orderExportObj->orderlines =  $orderExportItems;
+        else {
+            $orderprepare = 'No Valid Items in Order: '.$order->get_order_number();
+            add_post_meta($order->get_id(), 'fah_orderExport', 'No Flora@home Products');
+            return array($prepare, $orderprepare);
+
+        }
+        
+
+    } else {
+        $orderprepare = 'No Items in Order'. $order->get_order_number();
+        add_post_meta($order->get_id(), 'fah_orderExport', 'No Products for export');
+        return array($prepare, $orderprepare);
+
+    }
+
     //Mandatory Fields
     if ($order->get_shipping_first_name()) {
         $orderExportObj->firstname = $order->get_shipping_first_name();
@@ -181,63 +244,7 @@ function fah_webshop_order_prepare($order) {
 
     } 
     
-    $orderExportItems = [];
-
-    if(count($order->get_items('line_item')) >0 ) {
-        
-        foreach ($order->get_items('line_item') as $orderItem) {
-           
-
-            if ($orderItem['product_id']) {
-                
-                $orderProduct = new WC_Product($orderItem['product_id']);
-                if( $orderProduct->get_sku()) {
-                    
-                    $fahOrderLineItem = new florahome_Order_item();
-                    $fahOrderLineItem->productcode = $orderProduct->get_sku();
-                    $fahOrderLineItem->quantity = $orderItem['qty'];
-                    
-
-                    $orderExportItems[] = $fahOrderLineItem;
-
-                } else {
-                    
-                    $orderprepare = 'Ordered product does not have SKU';
-                    return array($prepare, $orderprepare);
-
-                }
-                
-
-
-            } else {
-                
-                $orderprepare = 'Error getting product Line item';
-                return array($prepare, $orderprepare);
-                
-
-            }
-           
-
-            
-
-
-        }
-       
-        if (count($orderExportItems) > 0 )
-            $orderExportObj->orderlines =  $orderExportItems;
-
-        else {
-            $orderprepare = 'No Valid Items in Order';
-            return array($prepare, $orderprepare);
-
-        }
-        
-
-    } else {
-        $orderprepare = 'No Items in Order';
-        return array($prepare, $orderprepare);
-
-    }
+    
     
 
     $orderExportJson = json_encode($orderExportObj);
