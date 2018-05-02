@@ -416,7 +416,7 @@ class florahome_Admin {
 				}*/
 
 				//Alternate if unlimited time works
-				error_log('In Product Image Download');
+				//error_log('In Product Image Download');
 				update_product_image($productitem);
 
 
@@ -425,7 +425,8 @@ class florahome_Admin {
 
 			}
 
-			add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.',null,false); 
+			if (!get_option( 'fah_download_success_images' ))   
+				add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully. If',null,false); 
 
 
 
