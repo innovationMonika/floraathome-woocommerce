@@ -49,13 +49,14 @@ class florahome {
 		if ( defined( 'florahome_VERSION' ) ) {
 			$this->version = florahome_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.0.4';
 		}
 		$this->florahome = 'florahome';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
+		$this->define_public_hooks();
 	
 	}
 
@@ -80,6 +81,10 @@ class florahome {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/florahome-order-screen.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/florahome-admin-error.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/florahome-admin-errors.php';
+		
+		//Public
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-florahome-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/florahome-public-display.php';
 
 
 		$this->loader = new florahome_Loader();
@@ -111,6 +116,14 @@ class florahome {
 	}
 
 
+	private function define_public_hooks() {
+
+		$plugin_public = new florahome_Public( $this->get_florahome(), $this->get_version() );
+
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+	}
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *

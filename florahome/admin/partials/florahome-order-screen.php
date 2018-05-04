@@ -21,8 +21,11 @@
     add_action('manage_shop_order_posts_custom_column', 'add_exportedColumn', 10, 2);
     function add_exportedColumn($column)
     {
-        global $post, $woocommerce, $the_order;
-        $order_id = $the_order->id;
+        global $post, $woocommerce, $the_order, $item;
+       
+        $the_order = wc_get_order($post->ID);
+       
+        $order_id = $the_order->get_id();
         switch ($column) {
             case 'flora-order-export':
                 $isExported = get_post_meta($order_id, 'fah_orderExport', true);

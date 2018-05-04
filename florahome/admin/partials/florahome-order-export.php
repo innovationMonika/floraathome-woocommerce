@@ -16,11 +16,11 @@ function fah_webshop_order_export($order) {
 
     $options = get_option( 'fah_settings' );
     
-    $apiURL = $options[fah_text_api_url] ? $options[fah_text_api_url] : 'https://api.floraathome.nl/v1';
+    $apiURL = $options['fah_text_api_url'] ? $options['fah_text_api_url'] : 'https://api.floraathome.nl/v1';
     $apiURL = rtrim($apiURL,'/').'/';
     $defaultAttributes = ['productcode','linnaeusname','description','promotionaltext'];
     
-    if(!isset($options[fah_text_api_token])) {
+    if(!isset($options['fah_text_api_token'])) {
          //Implement throw of exception to handle errors
          return array($result, 'API token not set');
 
@@ -94,7 +94,7 @@ function fah_webshop_order_prepare($order) {
 
     $options = get_option( 'fah_settings' );
 
-    $orderExportObj->referenceWebshop =  $options[fah_webshop_ref];
+    $orderExportObj->referenceWebshop =  $options['fah_webshop_ref'];
     $orderExportObj->referenceCustomer = $order->get_order_number();
     
     $orderExportItems = [];
@@ -103,7 +103,6 @@ function fah_webshop_order_prepare($order) {
         
         foreach ($order->get_items('line_item') as $orderItem) {
            
-
             if ($orderItem['product_id']) {
                 
                 $orderProduct = new WC_Product($orderItem['product_id']);
@@ -116,6 +115,16 @@ function fah_webshop_order_prepare($order) {
                     $fahOrderLineItem = new florahome_Order_item();
                     $fahOrderLineItem->productcode = $orderProduct->get_sku();
                     $fahOrderLineItem->quantity = $orderItem['qty'];
+                    $itemmeta = $orderItem->get_meta_data();
+                    if(is_array($itemmeta)) {
+                            foreach ($itemmeta as $metaobject) {
+                            $itemmetadata = $metaobject->get_data();
+                            if($itemmetadata['key'] === 'card_message_text')
+                                $fahOrderLineItem->text = $itemmetadata['value'];
+
+                        }
+                    }
+          
                     
 
                     $orderExportItems[] = $fahOrderLineItem;
