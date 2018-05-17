@@ -74,12 +74,18 @@
                 $fahexport = fah_webshop_order_export($order);
                 if(is_array($fahexport)) {
                     if ($fahexport[0]) {
-                        
-                        add_post_meta($order_id, 'fah_orderExport', 'Exported');
+                        if (get_post_meta($order_id, 'fah_orderExport'))
+                            update_post_meta($order_id, 'fah_orderExport', 'Exported');
+                        else
+                            add_post_meta($order_id, 'fah_orderExport', 'Exported');
                         $count++;
                         
                     } else {
-                        add_post_meta($order_id, 'fah_orderExport', $fahexport[1]);
+                        //wp_die($fahexport[1]);
+                        if (get_post_meta($order_id, 'fah_orderExport'))
+                            update_post_meta($order_id, 'fah_orderExport', $fahexport[1]);
+                        else
+                            add_post_meta($order_id, 'fah_orderExport', $fahexport[1]);
 
                     }
                 }

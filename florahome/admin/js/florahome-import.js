@@ -21,7 +21,10 @@
 				
 			} else {
 				$title_action.hide();
+				$('.woocommerce-BlankState-cta:last').after('<input type="button" id="full-import" class="woocommerce-BlankState-cta button flora-blank-slate" value="Import products from Flora@home"/><div class="spinner" style="float:initial; visibility: visible; display: none;"></div>')
 			}
+
+			
 
 			$('#full-import').click(function(){
 				var data = {

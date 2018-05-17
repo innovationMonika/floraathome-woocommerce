@@ -18,7 +18,7 @@ function fah_webshop_order_export($order) {
     
     $apiURL = $options['fah_text_api_url'] ? $options['fah_text_api_url'] : 'https://api.floraathome.nl/v1';
     $apiURL = rtrim($apiURL,'/').'/';
-    $defaultAttributes = ['productcode','linnaeusname','description','promotionaltext'];
+    //$defaultAttributes = ['productcode','linnaeusname','description','promotionaltext'];
     
     if(!isset($options['fah_text_api_token'])) {
          //Implement throw of exception to handle errors
@@ -39,7 +39,7 @@ function fah_webshop_order_export($order) {
         return array($result,'Error in export');
 
 
-    $apitoken = $options[fah_text_api_token];
+    $apitoken = $options['fah_text_api_token'];
     
 
     $path = 'orders/create?apitoken='.$apitoken.'&type=json';
@@ -54,23 +54,35 @@ function fah_webshop_order_export($order) {
             )
         );
        
+        
         if ( is_wp_error( $fahpost ) ) {
+            
             $error_message = $fahpost->get_error_message();
             $orderProcess = $error_message;
             return array($result, $orderProcess);
             
          } else {
+            
             $fahbody = json_decode(wp_remote_retrieve_body($fahpost));
+           
     
              if ($fahbody->success) {
                
-        
+                
                      add_post_meta($order->get_id(), 'fah_order_Export_code', $fahbody->ordercode);
                      $result = true;
                      return array($result, $orderProcess);
                      
         
-                 } 
+                 } elseif ($fahbody->error) {
+                    foreach ($fahbody->error as $errorvalue)
+                        $orderProcess = 'Error: '. $errorvalue;
+                    return array($result, $orderProcess);
+                    //error_log(print_r($errorvalue,true));
+
+                 }
+            
+                 
          }
 
     } else {

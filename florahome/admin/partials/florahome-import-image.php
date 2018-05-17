@@ -34,42 +34,53 @@
             $timeout = 300;
 
             $tmp = download_url( $url , $timeout );
+            //error_log(print_r($tmp,true));
+            if(is_string( $tmp)) {
+                $file_array = array();
 
-            $file_array = array();
+                if(function_exists('exif_imagetype')) {
+                    $fileextension = image_type_to_extension( exif_imagetype( $url ) );
 
-            if(function_exists('exif_imagetype')) {
-                $fileextension = image_type_to_extension( exif_imagetype( $url ) );
-
-            }                
-            else {
+                }                
+                else {
+                    
+                    $imageT = getimagesize( $url );
                 
-                $imageT = getimagesize( $url );
-			
-			    $fileextension = image_type_to_extension( $imageT[2] );
+                    $fileextension = image_type_to_extension( $imageT[2] );
+                }
+                
+                $path = pathinfo( $tmp );
+
+                if( ! isset( $path['extension'] ) ){
+
+                    $tmpnew = $tmp . '.tmp';
+                    $file_array['tmp_name'] = $tmpnew;				 
+                    
+                } else {
+                    $file_array['tmp_name'] = $tmp;
+                }	
+
+                $name = pathinfo( $url, PATHINFO_FILENAME )  . $fileextension;
+                $file_array['name'] = $name;
+                // $file_array['type'] = mime_content_type( $file_array['tmp_name'] );		
+
+            
+
+
+
             }
             
-            $path = pathinfo( $tmp );
-
-            if( ! isset( $path['extension'] ) ){
-
-                $tmpnew = $tmp . '.tmp';
-                $file_array['tmp_name'] = $tmpnew;				 
-                
-            } else {
-                $file_array['tmp_name'] = $tmp;
-            }	
-
-            $name = pathinfo( $url, PATHINFO_FILENAME )  . $fileextension;
-            $file_array['name'] = $name;
-            // $file_array['type'] = mime_content_type( $file_array['tmp_name'] );		
-
-            // If error storing temporarily, unlink
-
+             // If error storing temporarily, unlink
             if ( is_wp_error( $tmp ) ) {
 
-                @unlink($file_array['tmp_name']);
+                if(isset($file_array['tmp_name'])) {
+                    
+                    @unlink($file_array['tmp_name']);
 
-                $file_array['tmp_name'] = '';
+                     $file_array['tmp_name'] = '';
+
+                }
+                
 
                 $data['result'] = 'error';
 
@@ -79,7 +90,7 @@
 
                 $data['actions'] = '-';
 
-                // If ajax call
+                //  ajax call
 
                 //if( $post_id != 0 ){
 

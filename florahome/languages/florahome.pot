@@ -1,0 +1,3 @@
+#: florahome-public-display.php:46
+msgid "Message for the card"
+msgstr ""

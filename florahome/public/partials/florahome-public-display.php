@@ -43,7 +43,7 @@ function add_card_text_field() {
                     echo '<table class="variations" cellspacing="0">
                     <tbody>
                         <tr>
-                        <td class="label"><label for="card">Message on card</label></td>
+                        <td class="label"><label for="card"> '. _e("Message for the card",'florahome').'</label></td>
                         <td class="value">
                              <input type="text" name="card-text-message" style="width:100%;" value="'. $message .'" />  
                                                  
@@ -119,7 +119,8 @@ function render_meta_on_cart_and_checkout( $cart_data, $cart_item = null ) {
         $custom_items = $cart_data;
     }
     if( isset( $cart_item['card_message_text'] ) ) {
-        $custom_items[] = array( "name" => 'Card Message', "value" => $cart_item['card_message_text'] );
+        //$check = _e("Message card",'florahome');
+        $custom_items[] = array( "name" => __('Message for the card','florahome'), "value" => $cart_item['card_message_text'] );
     }
     return $custom_items;
 }
@@ -132,7 +133,7 @@ add_filter( 'woocommerce_get_item_data', 'render_meta_on_cart_and_checkout', 10,
 */
 function card_message_order_meta_handler( $item, $cart_item_key, $values, $order ) {
     
-    
+    error_log(print_r($order,true));
     if( isset( $values['card_message_text'] ) ) {
         $item->update_meta_data( 'card_message_text', $values['card_message_text'] );
     }

@@ -187,7 +187,7 @@ class florahome_Admin {
 			);
 		add_settings_field(
 			'fah_check_update_attr',
-			__( 'Update product Attributes', 'fah' ),
+			__( 'Disable update product attributes', 'fah' ),
 			'fah_check_update_attr_render',
 			'pluginPage_product',
 			'fah_pluginPage_products'
@@ -304,10 +304,23 @@ class florahome_Admin {
 					if (!empty($fahexport)) {
 						
 							if(isset($fahexport[0])){
-								if($fahexport[0])
-									add_post_meta($order->get_id(), 'fah_orderExport', 'Exported');
-								else 
+								if($fahexport[0]) {
+									if (get_post_meta($order->get_id(), 'fah_orderExport'))
+										update_post_meta($order->get_id(), 'fah_orderExport', 'Exported');
+									else 
+										add_post_meta($order->get_id(), 'fah_orderExport', 'Exported');
+
+
+								}
+									
+								else {
 									$errors[$order->get_id()] = $fahexport[1];
+									if (get_post_meta($order->get_id(), 'fah_orderExport'))
+										update_post_meta($order->get_id(), 'fah_orderExport', $fahexport[1]);
+									else
+										add_post_meta($order->get_id(), 'fah_orderExport', $fahexport[1]);
+								}
+									
 							
 							}
 						

@@ -33,7 +33,7 @@ function fah_webshop_get_products() {
         
     
         
-    $apitoken = $options[fah_text_api_token];
+    $apitoken = $options['fah_text_api_token'];
     
     $path = 'products/get?apitoken='.$apitoken.'&type=json';
     //print_r($apiURL.$path);
@@ -179,25 +179,59 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
     } 
    
     
-    
+    //print_r($floraProduct->aboutgrower);
+
     $globalattributes = wc_get_attribute_taxonomies();
 
     $att_products = [];
     $position = 0;
     
+    if(isset($floraProduct->aboutgrower)) {
+        $floraAttribute = new WC_Product_Attribute();
+        $floraAttribute->set_id('aboutgrower');
+        $floraAttribute->set_name('aboutgrower');
+        //$floraAttribute->set_options()
+        $floraAttribute->set_options(array($floraProduct->aboutgrower));
+        $floraAttribute->set_visible(0);
+        $floraAttribute->set_position($position);
+        $floraAttribute->set_variation(0);
+        $att_products[] = $floraAttribute;
+        
+
+    }
+
+    if(isset($floraProduct->caretips)) {
+        $floraAttribute = new WC_Product_Attribute();
+        $floraAttribute->set_id('caretips');
+        $floraAttribute->set_name('caretips');
+        //$floraAttribute->set_options()
+        $floraAttribute->set_options(array($floraProduct->caretips));
+        $floraAttribute->set_visible(0);
+        $floraAttribute->set_position($position);
+        $floraAttribute->set_variation(0);
+        $att_products[] = $floraAttribute;
+        
+
+    }
+    //print_r($globalattributes);
+
     foreach ($globalattributes as $productAtt) {
+
+        if ($productAtt->attribute_name === 'caretips' || $productAtt->attribute_name === 'aboutgrower')
+        continue;
         
         $attName = $productAtt->attribute_name;
         
-        //print_r($productAtt);
-        //die;
-        
-        if(isset($floraProduct->$attName)) {
+       
+        if(isset($floraProduct->$attName) && !empty($floraProduct->$attName)) {
         
            $floraAttribute = new WC_Product_Attribute();
            //$floraAttribute->set_id()
+            
+            
            $floraAttribute->set_id(wc_attribute_taxonomy_id_by_name('pa_'.$productAtt->attribute_name));
            $floraAttribute->set_name('pa_'.$productAtt->attribute_name);
+           //$floraAttribute->set_options()
            $floraAttribute->set_options(array($floraProduct->$attName));
            $floraAttribute->set_visible(0);
            $floraAttribute->set_position($position);
@@ -214,6 +248,7 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
 
 
     }
+   
     //print_r($att_products);
     //die;
     $floraWooProduct->set_attributes($att_products);
@@ -261,7 +296,7 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
         add_post_meta($product_id, 'pending_images', $imagejson);
     
     add_post_meta($product_id, '_flora_product', true);
-   
+    
     return true;
     
 
@@ -416,6 +451,8 @@ function fah_webshop_recent_products_date($daterecent) {
         if($actualAdded > 0 || $actualUpdated > 0 || $actualDeleted > 0 ) {
             if (!get_option( 'fah_full_update_success' ))         
                 add_option('fah_full_update_success', $message,null,false);
+           
+
         }
         
         $fahprocess->result = true;
@@ -523,6 +560,7 @@ function update_product_image ($product) {
         $productImages = json_decode($jsonImage);
     if(count($productImages) > 0 ) {
         $imageIds = [];
+        $imageErrors = [];
         foreach($productImages as $productImage) {
             //error_log(print_r( $productImage, true));
             $upload = save_external_files(0,$productImage);
@@ -531,7 +569,15 @@ function update_product_image ($product) {
 
 
 
+            } elseif ($upload['result'] == 'error' ) {
+                $imageErrors[] = $productImage;
+
+            } else {
+
+                $imageErrors[] = $productImage;
+
             }
+
 
 
         }
@@ -552,6 +598,9 @@ function update_product_image ($product) {
 
             add_post_meta($product->ID, 'set_flora_images', $imageIds);
             
+        }
+        if ( count($imageErrors) === count($productImages)) {
+            delete_post_meta($product->ID, 'pending_images');
         }
     }
 }

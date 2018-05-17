@@ -41,14 +41,14 @@ class florahome_process {
         $headers = array(
             'Content-Type: text/html; charset=UTF-8'
         );
-        if ($options[fah_text_admin_email]) {
+        if ($options['fah_text_admin_email']) {
             if ($this->orderErr)
                 $subject = 'Flora at home Order export processing error';
             elseif ($this->productErr)
                  $subject = 'Flora at home product import processing error';
             else   
                 $subject = 'Flora at home processing error';
-            $to = $options[fah_text_admin_email];
+            $to = $options['fah_text_admin_email'];
             
            ;
             if (count( $this->errors) > 0 ) {

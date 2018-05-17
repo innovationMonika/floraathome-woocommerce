@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  * 
  */
-define( 'florahome_VERSION', '1.0.5' );
+define( 'florahome_VERSION', '1.0.7' );
 
 /**
  * The code that runs during plugin activation.

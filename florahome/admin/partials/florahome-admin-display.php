@@ -114,7 +114,8 @@ function fah_import_schedule_render() {
 
 function fah_check_publish_render(  ) {
     
-    $options = get_option( 'fah_settings' );
+	$options = get_option( 'fah_settings' );
+	
     ?>
 	<input type='checkbox' name='fah_settings[fah_check_publish]' <?php checked( $options['fah_check_publish'], 1 ); ?> value='1'>
 	<?php
@@ -123,9 +124,12 @@ function fah_check_publish_render(  ) {
 
 function fah_check_update_attr_render(  ) {
     
-    $options = get_option( 'fah_settings' );
+	$options = get_option( 'fah_settings' );
+	$checkvalue = 0;
+	if (isset($options['fah_check_update_attr']))
+		$checkvalue = $options['fah_check_update_attr'];
     ?>
-	<input type='checkbox' name='fah_settings[fah_check_update_attr]' <?php checked( $options['fah_check_update_attr'], 1 ); ?> value='1'>
+	<input type='checkbox' name='fah_settings[fah_check_update_attr]' <?php checked( $checkvalue, 1 ); ?> value='1'>
 	<?php
 
 }
@@ -304,7 +308,7 @@ function fah_options_page() {
 
 	 
 	<?php
-	
+
 }
 
 ?>
