@@ -5,17 +5,18 @@
  *
  *
  * @link              http://example.com
- * @since             1.0.0
+ * @since             1.0.7 
  * @package           florahome
  * @wordpress-plugin
  * Plugin Name:       Flora@home plugin
  * Description:       www.floraathome.nl
- * Version:           1.0.0
+ * Version:           1.0.7
  * Author:            Inshoring Pros
  * Author URI:        http://www.resourcing-pros.com
  * Text Domain:       florahome
  * 
  */
+ 
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
