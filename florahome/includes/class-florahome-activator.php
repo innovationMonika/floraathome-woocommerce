@@ -53,16 +53,16 @@ class florahome_Activator {
 
 
 		$floraProductAttributes = [
-			'potsize',
-			'height',
-			'purchaseprice',
-			'linnaeusname', 
-			'numberperorder',
-			'specifications', 
-			'grower', 
-			'aboutgrower',
-			'caretips',
-			'branches' 
+			'fah_potsize',
+			'fah_height',
+			'fah_purchaseprice',
+			'fah_linnaeusname', 
+			'fah_numberperorder',
+			'fah_specifications', 
+			'fah_grower', 
+			'fah_aboutgrower',
+			'fah_caretips',
+			'fah_branches' 
 			
 		];
 

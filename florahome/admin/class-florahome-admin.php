@@ -430,7 +430,7 @@ class florahome_Admin {
 
 				//Alternate if unlimited time works
 				//error_log('In Product Image Download');
-				update_product_image($productitem);
+				florahome_fah_update_product_image($productitem);
 
 
 				

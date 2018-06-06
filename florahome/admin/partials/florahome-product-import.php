@@ -134,7 +134,7 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
            
         if($options['fah_check_update_attr']){
             
-            $floraWooProduct = update_price($floraProduct, $floraWooProduct);
+            $floraWooProduct = florahome_product_update_price($floraProduct, $floraWooProduct);
         
             $floraWooProduct->save();
             return true;
@@ -216,11 +216,13 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
     //print_r($globalattributes);
 
     foreach ($globalattributes as $productAtt) {
-
-        if ($productAtt->attribute_name === 'caretips' || $productAtt->attribute_name === 'aboutgrower')
+        
+        if ($productAtt->attribute_name === 'fah_caretips' || $productAtt->attribute_name === 'fah_aboutgrower')
         continue;
         
-        $attName = $productAtt->attribute_name;
+        //$attName = $productAtt->attribute_name;
+        
+        $attName = substr($productAtt->attribute_name, (strpos($productAtt->attribute_name,'_') +1));
         
        
         if(isset($floraProduct->$attName) && !empty($floraProduct->$attName)) {
@@ -229,8 +231,8 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
            //$floraAttribute->set_id()
             
             
-           $floraAttribute->set_id(wc_attribute_taxonomy_id_by_name('pa_'.$productAtt->attribute_name));
-           $floraAttribute->set_name('pa_'.$productAtt->attribute_name);
+           $floraAttribute->set_id(wc_attribute_taxonomy_id_by_name('pa_fah_'.$productAtt->attribute_name));
+           $floraAttribute->set_name($attName);
            //$floraAttribute->set_options()
            $floraAttribute->set_options(array($floraProduct->$attName));
            $floraAttribute->set_visible(0);
@@ -254,7 +256,7 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
     $floraWooProduct->set_attributes($att_products);
     
    
-    $floraWooProduct = update_price($floraProduct, $floraWooProduct);
+    $floraWooProduct = florahome_product_update_price($floraProduct, $floraWooProduct);
         
     $imagejson = '';
     $imagejson = json_encode($floraProduct->images);
@@ -266,7 +268,7 @@ function fah_webshop_create_update_product($options,$floraProduct, $floraWooProd
         if(isset($floraProduct->images)) {
             if (count($floraProduct->images)>0) {
                 foreach ($floraProduct->images as $productImage) {
-                    $upload = save_external_files(0,$productImage);
+                    $upload = florahome_save_external_files(0,$productImage);
                     if ($upload['result'] == 'success') {
                         $imageIds[] = $upload['image_id'];
 
@@ -478,7 +480,7 @@ function fah_webshop_recent_products_date($daterecent) {
 * Input - Flora Woo Commerce Product Object
  */
 
-function update_price($floraProduct, $floraWooProduct) {
+function florahome_product_update_price($floraProduct, $floraWooProduct) {
 
     $options = get_option( 'fah_settings' );
 
@@ -517,7 +519,7 @@ function update_price($floraProduct, $floraWooProduct) {
 
 }
 
-function show_progress_import ($total, $imported , $skipped) {
+function florahome_show_progress_import ($total, $imported , $skipped) {
     if ($total > 0) {
         ?><script type="text/javascript">
 
@@ -540,7 +542,7 @@ function show_progress_import ($total, $imported , $skipped) {
 
 }
 
-function update_product_image ($product) {
+function florahome_fah_update_product_image ($product) {
     
     $jsonImage = get_post_meta($product->ID, 'pending_images');
     //error_log(print_r($jsonImage,true));
@@ -563,7 +565,7 @@ function update_product_image ($product) {
         $imageErrors = [];
         foreach($productImages as $productImage) {
             //error_log(print_r( $productImage, true));
-            $upload = save_external_files(0,$productImage);
+            $upload = florahome_save_external_files(0,$productImage);
             if ($upload['result'] == 'success') {
                 $imageIds[] = $upload['image_id'];
 

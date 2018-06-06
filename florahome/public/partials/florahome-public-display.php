@@ -14,7 +14,7 @@
  * 
  * Extra field for card types 
  */
-function add_card_text_field() {
+function florahome_fah_add_card_text_field() {
     global $wp_query;
     global $product;
     global $post;
@@ -71,14 +71,14 @@ function add_card_text_field() {
     
   
 }
-add_action( 'woocommerce_before_add_to_cart_button', 'add_card_text_field' );
+add_action( 'woocommerce_before_add_to_cart_button', 'florahome_fah_add_card_text_field' );
 
 
 /*
 * Validation for custom field
 */
 
-function card_message_validation() { 
+function florahome_fh_card_message_validation() { 
     /*if ( empty( $_REQUEST['card-text-message'] ) ) {
         wc_add_notice( __( 'Please enter message for card&hellip;', 'woocommerce' ), 'error' );
         return false;
@@ -91,14 +91,14 @@ function card_message_validation() {
     }
     return true;
 }
-add_action( 'woocommerce_add_to_cart_validation', 'card_message_validation', 10, 3 );
+add_action( 'woocommerce_add_to_cart_validation', 'florahome_fh_card_message_validation', 10, 3 );
 
 
 /*
 * add card message in cart field
 */
 
-function save_card_message_field( $cart_item_data, $product_id ) {
+function florahome_save_card_message_field( $cart_item_data, $product_id ) {
     if( isset( $_REQUEST['card-text-message'] ) ) {
         $cart_item_data[ 'card_message_text' ] = $_REQUEST['card-text-message'];
         /* below statement make sure every add to cart action as unique line item */
@@ -106,13 +106,13 @@ function save_card_message_field( $cart_item_data, $product_id ) {
     }
     return $cart_item_data;
 }
-add_action( 'woocommerce_add_cart_item_data', 'save_card_message_field', 10, 2 );
+add_action( 'woocommerce_add_cart_item_data', 'florahome_save_card_message_field', 10, 2 );
 
 /*
 * add card message on checkouot
 */
 
-function render_meta_on_cart_and_checkout( $cart_data, $cart_item = null ) {
+function florahome_render_meta_on_cart_and_checkout( $cart_data, $cart_item = null ) {
     $custom_items = array();
     /* Woo 2.4.2 updates */
     if( !empty( $cart_data ) ) {
@@ -124,14 +124,14 @@ function render_meta_on_cart_and_checkout( $cart_data, $cart_item = null ) {
     }
     return $custom_items;
 }
-add_filter( 'woocommerce_get_item_data', 'render_meta_on_cart_and_checkout', 10, 2 );
+add_filter( 'woocommerce_get_item_data', 'florahome_render_meta_on_cart_and_checkout', 10, 2 );
 
 
 
 /*
 * add card message in order meta
 */
-function card_message_order_meta_handler( $item, $cart_item_key, $values, $order ) {
+function florahome_card_message_order_meta_handler( $item, $cart_item_key, $values, $order ) {
     
     error_log(print_r($order,true));
     if( isset( $values['card_message_text'] ) ) {
@@ -139,6 +139,6 @@ function card_message_order_meta_handler( $item, $cart_item_key, $values, $order
     }
   
 }
-add_action( 'woocommerce_checkout_create_order_line_item', 'card_message_order_meta_handler', 1, 4 );
+add_action( 'woocommerce_checkout_create_order_line_item', 'florahome_card_message_order_meta_handler', 1, 4 );
 
 ?>

@@ -9,8 +9,8 @@
      * @subpackage florahome/admin/partials
      */
     
-    add_filter('manage_edit-shop_order_columns', 'custom_shop_order_column', 11);
-    function custom_shop_order_column($columns)
+    add_filter('manage_edit-shop_order_columns', 'florahome_custom_shop_order_column', 11);
+    function florahome_custom_shop_order_column($columns)
     {
         //add columns
         $columns['flora-order-export'] = __('Export Status', 'theme_slug');
@@ -18,8 +18,8 @@
         return $columns;
     }
 
-    add_action('manage_shop_order_posts_custom_column', 'add_exportedColumn', 10, 2);
-    function add_exportedColumn($column)
+    add_action('manage_shop_order_posts_custom_column', 'florahome_add_exportedColumn', 10, 2);
+    function florahome_add_exportedColumn($column)
     {
         global $post, $woocommerce, $the_order, $item;
        
@@ -108,31 +108,5 @@
         exit;
     
     }
-    /*add_action('admin_footer-edit.php', 'custom_bulk_admin_footer');
-
-    function custom_bulk_admin_footer() {
-
-        global $post_type;
-
-        if($post_type == 'shop_order') {
-        ?>
-        <script type="text/javascript">
-            jQuery(document).ready(function() {
-                jQuery('<option>').val('fah_export').text('<?php _e('Export')?>').appendTo("select[name='action']");
-                
-            });
-        </script>
-        <?php
-        }
-    }
-
-
-    add_action('admin_footer-edit.php', 'fah_order_export_bulk');
-
-    function fah_order_export_bulk() {
-
-        $wp_list_table = wc_
-        _get_list_table('WP_Posts_List_Table');
-
-    }*/
+   
 ?>

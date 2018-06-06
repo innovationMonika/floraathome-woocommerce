@@ -251,7 +251,7 @@ function fah_order_status_render() {
 
 // Add custom Schedule of 5 Mins & 2 mins
 
-function my_cron_schedules($schedules){
+function florahome_custom_cron_schedules($schedules){
     if(!isset($schedules["5min"])){
         $schedules["5min"] = array(
             'interval' => 5*60,
@@ -271,7 +271,7 @@ function my_cron_schedules($schedules){
     }
     return $schedules;
 }
-add_filter('cron_schedules','my_cron_schedules');
+add_filter('cron_schedules','florahome_custom_cron_schedules');
 
 function fah_options_page() { 
 

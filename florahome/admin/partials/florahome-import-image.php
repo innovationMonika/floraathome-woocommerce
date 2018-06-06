@@ -11,7 +11,7 @@
     require_once(ABSPATH . "wp-admin" . '/includes/file.php');
     require_once(ABSPATH . "wp-admin" . '/includes/media.php');
     require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-    function save_external_files( $post_id = 0 , $url = null ){
+    function florahome_save_external_files( $post_id = 0 , $url = null ){
         
         $data = array();
 
@@ -21,7 +21,7 @@
 
         } 
 
-        $validLink = checkValidLink( $url );
+        $validLink = florahome_checkValidLink( $url );
 
         //$validLink = true;
 
@@ -123,7 +123,7 @@
 
             }
 
-            $file = check_headers( $local_url );
+            $file = florahome_check_headers( $local_url );
 
             $data['result'] = 'success';
 
@@ -131,7 +131,7 @@
 
             $data['message'] = 'Uploaded Succesfully';
 
-            $data['file_size'] = format_size( preg_replace( "/[^0-9]/" , "" , $file['size'] ) );
+            $data['file_size'] = florahome_format_size( preg_replace( "/[^0-9]/" , "" , $file['size'] ) );
 
             $data['actions'] = '<a href="' . $fullPath . '" target="blank">View</a> | <a href="' . admin_url() . 'post.php?post=' . $id . '&action=edit' . '" target="blank">Edit</a>';
 
@@ -203,7 +203,7 @@
 
 
 
-    function check_headers( $link ){
+    function florahome_check_headers( $link ){
 
         $curl = curl_init();
 
@@ -243,11 +243,11 @@
 
 
 
-    function checkValidLink( $link ){
+    function florahome_checkValidLink( $link ){
 
 
 
-        $file_headers = check_headers( $link );
+        $file_headers = florahome_check_headers( $link );
 
         $headerStatus = trim(preg_replace('/\s\s+/', ' ', $file_headers[0] ));
 
@@ -275,7 +275,7 @@
     ** Get the file size
     */
 
-    function format_size($size) {
+    function florahome_format_size($size) {
 
         $sizes = array(" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB");
         if ($size == 0) { return('n/a'); } else {

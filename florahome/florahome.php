@@ -4,13 +4,13 @@
  * The plugin bootstrap file
  *
  *
- * @link              http://example.com
- * @since             1.0.7 
+ * 
+ * @since             1.0.8 
  * @package           florahome
  * @wordpress-plugin
  * Plugin Name:       Flora@home plugin
  * Description:       www.floraathome.nl
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            Inshoring Pros
  * Author URI:        http://www.resourcing-pros.com
  * Text Domain:       florahome
@@ -27,7 +27,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  * 
  */
-define( 'florahome_VERSION', '1.0.7' );
+define( 'florahome_VERSION', '1.0.8' );
 
 /**
  * The code that runs during plugin activation.
