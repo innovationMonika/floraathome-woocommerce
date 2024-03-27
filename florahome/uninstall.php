@@ -8,8 +8,10 @@
  * @package    florahome
  */
 
-// If uninstall not called from WordPress, then exit.
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	delete_option('fah_settings');
-	exit;
-}
+defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
+
+delete_option('fah_settings');
+wp_clear_scheduled_hook( 'task_flora_product_update' );
+wp_clear_scheduled_hook( 'task_flora_order_export' );
+wp_clear_scheduled_hook( 'task_flora_image_import' );
+wp_clear_scheduled_hook( 'task_flora_product_sync' );

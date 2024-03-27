@@ -15,6 +15,9 @@
     public $productcode;
     public $quantity;
     public $text;
+	public $sales_price_item;
+	public $sales_price_total;
+	public $sales_price_currency;
     
 
     public function __construct() {
@@ -23,6 +26,9 @@
         $this->productcode = ''; //Mandatory
         $this->quantity = ''; //Mandatory
         $this->text = ''; //Optional
+		$this->sales_price_item = '';
+		$this->sales_price_total = '';
+		$this->sales_price_currency = '';
        
 
     }

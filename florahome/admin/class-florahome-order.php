@@ -1,5 +1,4 @@
 <?php
-
 /**
  *
  * @link       https://www.floraathome.nl/
@@ -8,7 +7,6 @@
  * @package    florahome
  * @subpackage florahome/admin
  */
-
 /**
  *
  * @package    florahome
@@ -16,32 +14,31 @@
  * @author     Gaurav Solanki <gaurav@inshoring-pros.com>
  */
 class florahome_Order {
-
     public $referenceWebshop;
     public $referenceCustomer;
     public $companyname;
-    public $department ;
-    public $firstname ; //Mandatory
-    public $lastname ; //Mandatory
-    public $street ; //Mandatory - For full address
-    public $buildingName ;
-    public $floor ;
-    public $housenumber ;
-    public $housenumberAddition ;
-    public $postalcode ; //Mandatory
-    public $city ; //Mandatory
-    public $district ;
-    public $region ;
-    public $country ; //Mandatory - Two Digit
-    public $doorcode ; 
-    public $remark ;
-    public $phone ;
-    public $email ; //Mandatory
+    public $department;
+    public $firstname; //Mandatory
+    public $lastname; //Mandatory
+    public $street; //Mandatory - For full address
+    public $buildingName;
+    public $floor;
+    public $housenumber;
+    public $housenumberAddition;
+    public $postalcode; //Mandatory
+    public $city; //Mandatory
+    public $district;
+    public $region;
+    public $country; //Mandatory - Two Digit
+    public $doorcode;
+    public $remark;
+    public $phone;
+    public $email; //Mandatory
     public $orderlines;
-
+    //public $productcodedelivery;
+    //public $productoptions;
+    //public $deliverydate;
     public function __construct() {
-
-		
         $this->referenceWebshop = '';
         $this->referenceCustomer = '';
         $this->companyname = '';
@@ -58,11 +55,14 @@ class florahome_Order {
         $this->district = '';
         $this->region = '';
         $this->country = ''; //Mandatory - Two Digit
-        $this->doorcode = ''; 
+        $this->doorcode = '';
         $this->remark = '';
         $this->phone = '';
         $this->email = ''; //Mandatory
         $this->orderlines = array(); //Mandatory
+        //$this->productoptions = array();
+        //$this->deliverydate = '';
+        //$this->productcodedelivery = '';
 
     }
 }

@@ -49,7 +49,7 @@ class florahome {
 		if ( defined( 'florahome_VERSION' ) ) {
 			$this->version = florahome_VERSION;
 		} else {
-			$this->version = '1.0.4';
+			$this->version = '1.2.1';
 		}
 		$this->florahome = 'florahome';
 
@@ -57,7 +57,7 @@ class florahome {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-	
+
 	}
 
 	private function load_dependencies() {
@@ -72,6 +72,7 @@ class florahome {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-florahome-admin.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-florahome-order.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-florahome-order-item.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-florahome-order-productoptions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-florahome-process.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-florahome-notice.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/florahome-admin-display.php';
@@ -81,7 +82,7 @@ class florahome {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/florahome-order-screen.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/florahome-admin-error.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/florahome-admin-errors.php';
-		
+
 		//Public
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-florahome-public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/florahome-public-display.php';
@@ -101,27 +102,28 @@ class florahome {
 
 	private function define_admin_hooks() {
 
-		$plugin_admin = new florahome_Admin( $this->get_florahome(), $this->get_version() );
+		$plugin_admin = new florahome_Admin( $this->fah_get_florahome(), $this->fah_get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'fah_enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'fah_enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu',$plugin_admin,'fah_add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin,'fah_settings_init' );
-		$this->loader->add_action( 'woocommerce_product_options_grouping', $plugin_admin,'product_options_grouping' );
-		$this->loader->add_action( 'task_flora_product_update', $plugin_admin,'cron_product_update' );
-		$this->loader->add_action( 'task_flora_order_export', $plugin_admin,'cron_order_export' );
-		$this->loader->add_action( 'task_flora_image_import', $plugin_admin,'cron_image_import' );
-		
+		$this->loader->add_action( 'woocommerce_product_options_grouping', $plugin_admin,'fah_product_options_grouping' );
+		$this->loader->add_action( 'task_flora_product_update', $plugin_admin,'fah_cron_product_update' );
+		$this->loader->add_action( 'task_flora_order_export', $plugin_admin,'fah_cron_order_export' );
+		$this->loader->add_action( 'task_flora_image_import', $plugin_admin,'fah_cron_image_import' );
+		$this->loader->add_action( 'task_flora_product_sync', $plugin_admin,'fah_cron_product_sync' );
+
 
 	}
 
 
 	private function define_public_hooks() {
 
-		$plugin_public = new florahome_Public( $this->get_florahome(), $this->get_version() );
+		$plugin_public = new florahome_Public( $this->fah_get_florahome(), $this->fah_get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'fah_enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'fah_enqueue_scripts' );
 
 	}
 	/**
@@ -140,7 +142,7 @@ class florahome {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_florahome() {
+	public function fah_get_florahome() {
 		return $this->florahome;
 	}
 
@@ -149,7 +151,7 @@ class florahome {
 	 * @since     1.0.0
 	 * @return    florahome_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function fah_get_loader() {
 		return $this->loader;
 	}
 
@@ -159,7 +161,7 @@ class florahome {
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
+	public function fah_get_version() {
 		return $this->version;
 	}
 

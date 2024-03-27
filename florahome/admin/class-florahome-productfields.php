@@ -19,24 +19,24 @@
 class florahome_productfields {
 
     private $textfield_id;
- 
+
     public function __construct($field_id) {
         $this->textfield_id = $field_id;
     }
- 
+
     public function init() {
- 
+
             add_action(
                 'woocommerce_product_options_grouping',
-                array( $this, 'product_options_grouping' )
+                array( $this, 'fah_product_options_grouping' )
             );
     }
- 
-    public function product_options_grouping() {
- 
+
+    public function fah_product_options_grouping() {
+
             $description = sanitize_text_field( '' );
             $placeholder = sanitize_text_field( 'Information from Flora@home' );
- 
+
             $args = array(
                 'id'            => $this->textfield_id,
                 'label'         => sanitize_text_field( 'Product Teaser' ),
@@ -47,4 +47,3 @@ class florahome_productfields {
             woocommerce_wp_text_input( $args );
     }
 }
-

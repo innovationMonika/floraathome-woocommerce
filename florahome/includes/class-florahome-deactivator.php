@@ -9,7 +9,7 @@
  * @subpackage florahome/includes
  */
 
-class florahome_Deactivator {
+class fah_Deactivator {
 
 	public static function deactivate() {
 
