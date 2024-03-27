@@ -3,7 +3,7 @@
  * Plugin Name: Flora@home Plugin
  * Plugin URI: https://wordpress.org/plugins/florahome/
  * Description: Flora@Home stelt elke webshop in staat een assortiment verse bloemen en planten te verkopen. Geheel geïntegreerd in de webshop. Zonder risico of investeringen. Direct vanaf Nederlandse kwekers, bezorgd in heel Europa.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Inshoring Pros
  * Author URI: https://www.floraathome.nl
  * Text Domain: florahome
@@ -11,7 +11,8 @@
  * WC tested up to: 8.1.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
- *
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * @package Flora@home
  */
 
@@ -24,7 +25,7 @@ if (!defined('WPINC')) {
  * Currently plugin version.
  *
  */
-define('florahome_VERSION', '1.2.1');
+define('florahome_VERSION', '1.2.2');
 
 /**
  * The code that runs during plugin activation.

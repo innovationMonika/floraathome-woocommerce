@@ -28,7 +28,12 @@ class florahome_notices {
         ?>
 <div class="notice notice-success  is-dismissible">
 
- <p><?php esc_html_e(' ' . $this->noticeMessage, 'florahome'); ?></p>
+ <p><?php
+  printf(
+        __( '%s', 'florahome' ),
+        $this->noticeMessage
+        );
+ ?></p>
 </div><?php
     }
 
@@ -37,7 +42,12 @@ class florahome_notices {
         ?>
 <div class="notice notice-error is-dismissible">
 
- <p><?php esc_html_e('Please install ' . $this->noticeMessage . '++php CURL to use this module', 'florahome'); ?></p>
+ <p><?php
+  printf(
+        __( 'Please install %s ++php CURL to use this module', 'florahome' ),
+        $this->noticeMessage
+        );
+ ?></p>
 </div><?php
     }
 }

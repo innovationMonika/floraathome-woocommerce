@@ -19,7 +19,7 @@ function fah_webshop_ref_render() {
 function fah_text_api_url_render() {
     $options = get_option('fah_settings');
 ?> <input type='text' class='flora-field' name='fah_settings[fah_text_api_url]'
- value='<?php echo $options['fah_text_api_url']??'https://api.floraathome.nl/v1/'; ?>'>
+ value='<?php echo esc_url($options['fah_text_api_url']) ?? 'https://api.floraathome.nl/v1/'; ?>'>
 <div class="helper">Default: https://api.floraathome.nl/v1/</div>
 
 <?php
@@ -28,14 +28,14 @@ function fah_text_api_token_render() {
     $options = get_option('fah_settings');
 ?>
 <input type='text' class='flora-field' name='fah_settings[fah_text_api_token]'
- value='<?php echo $options['fah_text_api_token']??''; ?>'>
+ value='<?php echo esc_attr($options['fah_text_api_token'])??''; ?>'>
 <?php
 }
 function fah_text_admin_email_render() {
     $options = get_option('fah_settings');
 ?>
 <input type='email' class='flora-field' name='fah_settings[fah_text_admin_email]'
- value='<?php echo $options['fah_text_admin_email']??''; ?>'>
+ value='<?php echo sanitize_email($options['fah_text_admin_email'])??''; ?>'>
 <?php
 }
 function fah_settings_section_callback() {
@@ -93,7 +93,12 @@ function fah_import_schedule_render() {
         echo 'selected';
     } ?>>Once daily</option>
 </select>
-<div class="helper">Last import run: <?php if (!empty($importlastrun)) echo esc_html($importlastrun); ?></div>
+<div class="helper">Last import run: <?php if (!empty($importlastrun))
+printf(
+	__( '%s', 'florahome' ),
+	$importlastrun
+);
+ ?></div>
 <?php
 }
 function fah_product_sync_schedule_render() {
@@ -128,7 +133,8 @@ function fah_product_sync_schedule_render() {
         echo 'selected';
     } ?>>Once daily</option>
 </select>
-<div class="helper">Last import run: <?php if (!empty($importlastrun)) echo $importlastrun; ?></div>
+<div class="helper">Last import run:
+ <?php if (!empty($importlastrun)) printf(__( '%s', 'florahome' ),$importlastrun); ?></div>
 <?php
 }
 function fah_check_publish_render() {
@@ -190,7 +196,7 @@ function fah_text_publish_price_value_render() {
 <input class='flora-field' id=autoprice <?php if (!empty($options['fah_select_publish_price']) && $options['fah_select_publish_price'] === 'disable') {
         echo 'disabled required="false"';
     } else echo 'required=true'; ?> type='number' min=0 step=0.01 name='fah_settings[fah_text_publish_price_value]'
- value='<?php echo $options['fah_text_publish_price_value']??''; ?>'>
+ value='<?php echo esc_attr($options['fah_text_publish_price_value'])??''; ?>'>
 <?php
 }
 function fah_text_outofstock_deleted_product_render() {
@@ -234,7 +240,7 @@ function fah_export_schedule_render() {
         echo 'selected';
     } ?>>Once daily</option>
 </select>
-<div class="helper">Last export run: <?php if (!empty($exportlastrun)) echo $exportlastrun; ?></div>
+<div class="helper">Last export run: <?php if (!empty($exportlastrun)) echo esc_attr($exportlastrun); ?></div>
 <?php
 }
 function fah_order_status_render() {
@@ -245,8 +251,8 @@ function fah_order_status_render() {
 <select class='flora-field' name='fah_settings[fah_select_order_status][]' multiple="multiple">
  <?php
     foreach ($wcOrderStatus as $orderstatuskey => $orderstatusValue) {
-        if (!empty($options['fah_select_order_status']) && in_array($orderstatuskey, $options['fah_select_order_status'])) echo '<option value="' . $orderstatuskey . '" selected="selected">' . $orderstatusValue . '</option>';
-        else echo '<option value="' . $orderstatuskey . '" >' . $orderstatusValue . '</option>';
+        if (!empty($options['fah_select_order_status']) && in_array($orderstatuskey, $options['fah_select_order_status'])) echo '<option value="' . esc_attr($orderstatuskey) . '" selected="selected">' . esc_attr($orderstatusValue) . '</option>';
+        else echo '<option value="' . esc_attr($orderstatuskey) . '" >' . esc_attr($orderstatusValue) . '</option>';
     }
 ?>
 </select>

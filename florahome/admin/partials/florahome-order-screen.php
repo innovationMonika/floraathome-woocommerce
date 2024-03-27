@@ -27,13 +27,13 @@ function fah_add_exportedColumn($column) {
             //ecsExport
             if (empty($isExported)) {
                 echo 'NOT EXPORTED';
-            } else echo $isExported;
+            } else echo esc_attr($isExported);
             break;
         case 'flora-order-code':
             $fah_order_code = get_post_meta($order_id, 'fah_order_Export_code', true);
             if (empty($fah_order_code)) {
                 echo 'NOT EXPORTED';
-            } else echo esc_html($fah_order_code);
+            } else printf(__( '%s', 'florahome' ),$fah_order_code );
             break;
         }
     }
@@ -54,7 +54,9 @@ function fah_add_exportedColumn($column) {
             else update_option('FLoraathome_bulk_order_execution', microtime('return_float'));
         }
         $count = 0;
-        foreach ($_REQUEST['post'] as $order_id) {
+        $orders = array_map('sanitize_key', $_REQUEST['post']);
+
+        foreach ($orders as $order_id) {
             $order = new WC_Order(sanitize_text_field($order_id));
             //
             $orderExportStatus = $order->get_meta('fah_orderExport');
@@ -82,7 +84,7 @@ function fah_add_exportedColumn($column) {
         }
         // of course using add_query_arg() is not required, you can build your URL inline
         $location = add_query_arg(array('post_type' => 'shop_order', 'fah_orderexport_bulk' => 1, 'changed' => $count, // number of changed orders
-        'ids' => join(',', $_REQUEST['post']), 'post_status' => 'all'), 'edit.php');
+        'ids' => join(',', $orders), 'post_status' => 'all'), 'edit.php');
         wp_redirect(admin_url($location));
         exit;
     }

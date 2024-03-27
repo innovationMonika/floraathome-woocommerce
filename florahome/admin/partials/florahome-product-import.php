@@ -17,7 +17,7 @@ function fah_webshop_get_products() {
     $defaultAttributes = ['productcode', 'linnaeusname', 'description', 'promotionaltext'];
     if (!isset($options['fah_text_api_token'])) {
         $message = 'Flora@home Product Import Error: API Key not found. Please add API key in Flora@ home plugin settings';
-        if (!get_option('fah_full_import_error')) add_option('fah_full_import_error', $message, null, false);
+        if (!get_option('fah_full_import_error')) add_option('fah_full_import_error', $message, "", false);
         return false;
     }
     //Implement throw of exception to handle errors
@@ -58,19 +58,19 @@ function fah_webshop_get_products() {
         $deletedProducts = fah_daily_product_sync($floraProductsList);
         $message = 'Flora@Home Product Import completed: Total: ' . $totalProducts . ' products, Imported: ' . $importProducts . ' , Updated: ' . $skippedProducts . ' , Deleted:  ' . $deletedProducts . ' ';
         if ($importProducts > 0) {
-            if (!get_option('fah_import_success_images')) add_option('fah_import_success_images', 'Flora@home: The images of the imported products are getting downloaded in the background.', null, false);
+            if (!get_option('fah_import_success_images')) add_option('fah_import_success_images', 'Flora@home: The images of the imported products are getting downloaded in the background.', "", false);
             // Add Cron to download product images
             // error_log('ADD SCHEDULE');
             if ($time = wp_next_scheduled('task_flora_image_import')) wp_unschedule_event($time, 'task_flora_image_import');
             wp_schedule_event(time(), '5min', 'task_flora_image_import');
         }
-        if (!get_option('fah_full_import_success')) add_option('fah_full_import_success', $message, null, false);
+        if (!get_option('fah_full_import_success')) add_option('fah_full_import_success', $message, "", false);
     } else {
         // Error in API response implement
         //print_r($fahResponse->error);
         if (isset($fahResponse->error) && $fahResponse->error) $message = 'Flora@home Product Import Error: ' . $fahResponse->error;
         else $message = 'Flora@home Product Import Error: Incorrect settings, Please check API URL and key.' . json_encode($fahfetch);
-        if (!get_option('fah_full_import_error')) add_option('fah_full_import_error', $message, null, false);
+        if (!get_option('fah_full_import_error')) add_option('fah_full_import_error', $message, "", false);
     }
 }
 function fah_webshop_create_update_product($options, $floraProduct, $floraWooProduct, $update) {
@@ -184,7 +184,7 @@ function fah_webshop_create_update_product($options, $floraProduct, $floraWooPro
 function fah_webshop_recent_products() {
     $currentDate = date('Y-m-d');
     $updateProds = fah_webshop_recent_products_date($currentDate);
-    echo $updateProds->processMessage;
+    echo esc_attr($updateProds->processMessage);
 }
 function fah_webshop_recent_products_date($daterecent) {
     $options = get_option('fah_settings');
@@ -263,13 +263,13 @@ function fah_webshop_recent_products_date($daterecent) {
         }
         $message = 'Flora@Home Product update completed: Total: Successfully Added: ' . $actualAdded . ' , Updated: ' . $actualUpdated . ' , Deleted: ' . $actualDeleted . ' products';
         if ($actualAdded > 0) {
-            if (!get_option('fah_update_success_images')) add_option('fah_import_success_images', 'Flora@home: The images of the added products are getting downloaded in the background.', null, false);
+            if (!get_option('fah_update_success_images')) add_option('fah_import_success_images', 'Flora@home: The images of the added products are getting downloaded in the background.', "", false);
             // Add Cron to download product images
             if ($time = wp_next_scheduled('task_flora_image_import')) wp_unschedule_event($time, 'task_flora_image_import');
             wp_schedule_event(time(), '5min', 'task_flora_image_import');
         }
         if ($actualAdded > 0 || $actualUpdated > 0 || $actualDeleted > 0) {
-            if (!get_option('fah_full_update_success')) add_option('fah_full_update_success', $message, null, false);
+            if (!get_option('fah_full_update_success')) add_option('fah_full_update_success', $message, "", false);
         }
         $fahprocess->result = true;
         $fahprocess->processMessage = 'Successfully added ' . $addedCount . ' products, updated ' . $updatedCount . ' products, deleted ' . $deletedCount . ' products';
@@ -413,7 +413,7 @@ function fah_update_product_image($product) {
             if (get_post_meta($product->ID, 'pending_images')) {
                 $floraWooProduct->save();
                 delete_post_meta($product->ID, 'pending_images');
-                if (!get_option('fah_download_success_images')) add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.', null, false);
+                if (!get_option('fah_download_success_images')) add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.', "", false);
             } else delete_post_meta($product->ID, 'pending_images');
             //$imageIds = json_encode($imageIds);
             //add_post_meta($product->ID, 'set_flora_images', $imageIds);

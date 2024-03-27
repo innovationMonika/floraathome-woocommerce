@@ -29,16 +29,16 @@ function fah_add_card_text_field() {
                     $message = '';
                     if (isset($_REQUEST['card-text-message'])) $message = sanitize_text_field($_REQUEST['card-text-message']);
                     echo '<table class="variations" cellspacing="0">
-                    <tbody>
-                        <tr>
-                        <td class="label"><label for="card"> ' . esc_html_e("Message for the card", 'florahome') . '</label></td>
-                        <td class="value">
-                             <input type="text" name="card-text-message" style="width:100%;" value="' . $message . '" />
+                        <tbody>
+                            <tr>
+                                <td class="label"><label for="card"> ' . esc_html( _e("Message for the card", 'florahome') ) . '</label></td>
+                                <td class="value">
+                                    <input type="text" name="card-text-message" style="width:100%;" value="' . esc_attr( $message ) . '" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>';
 
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>';
                 }
             }
         }
@@ -87,7 +87,6 @@ function fah_render_meta_on_cart_and_checkout($cart_data, $cart_item = null) {
         $custom_items = $cart_data;
     }
     if (isset($cart_item['card_message_text'])) {
-        //$check = esc_html_e("Message card",'florahome');
         $custom_items[] = array("name" => __('Message for the card', 'florahome'), "value" => $cart_item['card_message_text']);
     }
     return $custom_items;

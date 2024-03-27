@@ -49,7 +49,7 @@ class florahome {
 		if ( defined( 'florahome_VERSION' ) ) {
 			$this->version = florahome_VERSION;
 		} else {
-			$this->version = '1.2.1';
+			$this->version = '1.2.2';
 		}
 		$this->florahome = 'florahome';
 

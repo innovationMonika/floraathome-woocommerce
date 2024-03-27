@@ -4,7 +4,7 @@ Tags: PostNL, Flora@home, woocommerce
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,6 +18,9 @@ Flora@Home stelt elke webshop in staat een assortiment verse bloemen en planten 
 Install and activate the WooCommerce and check Flora@home plugins, if you haven't already done so, then go to "Flora@home" in the WordPress admin menu and check the settings there.
 
 == Changelog ==
+Release: 1.2.2
+- Compatibility updates.
+
 Release: 1.2.1
 - Compatibility updates.
 

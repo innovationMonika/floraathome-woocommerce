@@ -35,7 +35,7 @@ class florahome_process {
             if ($this->orderErr) $subject = 'Flora at home Order export processing error';
             elseif ($this->productErr) $subject = 'Flora at home product import processing error';
             else $subject = 'Flora at home processing error';
-            $to = $options['fah_text_admin_email'];;
+            $to = sanitize_email($options['fah_text_admin_email']);
             if (count($this->errors) > 0) {
                 $body = 'Error in exporting orders';
                 foreach ($this->errors as $id => $errorValue) {

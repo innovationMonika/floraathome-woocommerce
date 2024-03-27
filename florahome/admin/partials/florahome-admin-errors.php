@@ -14,13 +14,25 @@ function fah_admin_notice() {
         if (get_option('fah_full_import_success')) {
 ?>
 <div class="notice notice-info is-dismissible">
- <p><?php esc_html_e(get_option('fah_full_import_success'), 'florahome'); ?></p>
+ <p>
+  <?php
+ printf(
+	__( '%s', 'florahome' ),
+	get_option('fah_full_import_success')
+  );
+ ?>
+ </p>
 </div>
 <?php
             if (get_option('fah_import_success_images')) {
 ?>
 <div class="notice notice-info is-dismissible">
- <p><?php esc_html_e(get_option('fah_import_success_images'), 'florahome'); ?></p>
+ <p><?php
+        printf(
+        __( '%s', 'florahome' ),
+        get_option('fah_import_success_images')
+        ); ?>
+ </p>
 </div>
 <?php
                 delete_option('fah_import_success_images');
@@ -29,7 +41,12 @@ function fah_admin_notice() {
         } else if (get_option('fah_full_import_error')) {
 ?>
 <div class="notice notice-error is-dismissible">
- <p><?php esc_html_e(esc_html(get_option('fah_full_import_error')), 'florahome'); ?></p>
+ <p><?php
+  printf(
+        __( '%s', 'florahome' ),
+        get_option('fah_full_import_error')
+        );
+  ?></p>
 </div>
 <?php
             delete_option('fah_full_import_error');
@@ -41,7 +58,12 @@ function fah_admin_notice() {
         if (count($products_pending_check) > 0) return;
 ?>
 <div class="notice notice-info is-dismissible">
- <p><?php esc_html_e(get_option('fah_download_success_images'), 'florahome'); ?></p>
+ <p><?php
+ printf(
+        __( '%s', 'florahome' ),
+        get_option('fah_download_success_images')
+        );?>
+ </p>
 </div>
 <?php
         delete_option('fah_download_success_images');
@@ -49,7 +71,12 @@ function fah_admin_notice() {
     if (get_option('fah_full_update_success')) {
 ?>
 <div class="notice notice-info is-dismissible">
- <p><?php esc_html_e(get_option('fah_full_update_success'), 'florahome'); ?></p>
+ <p><?php
+ printf(
+        __( '%s', 'florahome' ),
+        get_option('fah_full_update_success')
+        );
+ ?></p>
 </div>
 <?php
         delete_option('fah_full_update_success');

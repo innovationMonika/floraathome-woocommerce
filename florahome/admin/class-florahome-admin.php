@@ -173,7 +173,7 @@ class florahome_Admin {
             update_option('fah_select_export_run', current_time('mysql', false));
         } else
         //add_option('fah_select_export_run', date('Y-m-d h:i:s'),null,false);
-        add_option('fah_select_export_run', current_time('mysql', false), null, false);
+        add_option('fah_select_export_run', current_time('mysql', false), "", false);
     }
     /**
      * Cron Import of the product update
@@ -193,11 +193,11 @@ class florahome_Admin {
             update_option('fah_select_import_run', current_time('mysql', false));
         } else
         //add_option('fah_select_import_run', date('Y-m-d h:i:s'),null,false);
-        add_option('fah_select_import_run', current_time('mysql', false), null, false);
+        add_option('fah_select_import_run', current_time('mysql', false), "", false);
     }
     public function fah_cron_image_import() {
         $lastProcessRun = (int)get_option('fah_download_image_cron_run_time');
-        if (!$lastProcessRun) add_option('fah_download_image_cron_run_time', time(), null, false);
+        if (!$lastProcessRun) add_option('fah_download_image_cron_run_time', time(), "", false);
         else {
             if ((time() - $lastProcessRun) < 300) {
                 //error_log('Parrallel run');
@@ -236,7 +236,7 @@ class florahome_Admin {
                 //error_log('DOWNLOADING IMAGES'.$productitem->ID);
                 fah_update_product_image($productitem);
             }
-            if (!get_option('fah_download_success_images')) add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.', null, false);
+            if (!get_option('fah_download_success_images')) add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.', "", false);
         } else {
             //unlink cron if no products found
             wp_clear_scheduled_hook('task_flora_image_import');
@@ -257,6 +257,6 @@ class florahome_Admin {
             update_option('fah_select_sync_run', current_time('mysql', false));
         } else
         //add_option('fah_select_import_run', date('Y-m-d h:i:s'),null,false);
-        add_option('fah_select_sync_run', current_time('mysql', false), null, false);
+        add_option('fah_select_sync_run', current_time('mysql', false), "", false);
     }
 }
