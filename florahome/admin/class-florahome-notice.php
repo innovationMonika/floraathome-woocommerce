@@ -30,8 +30,8 @@ class florahome_notices {
 
  <p><?php
   printf(
-        __( '%s', 'florahome' ),
-        $this->noticeMessage
+        esc_html__( '%s', 'florahome' ),
+        esc_html($this->noticeMessage)
         );
  ?></p>
 </div><?php
@@ -44,8 +44,8 @@ class florahome_notices {
 
  <p><?php
   printf(
-        __( 'Please install %s ++php CURL to use this module', 'florahome' ),
-        $this->noticeMessage
+        esc_html__( 'Please install %s ++php CURL to use this module', 'florahome' ),
+        esc_html($this->noticeMessage)
         );
  ?></p>
 </div><?php

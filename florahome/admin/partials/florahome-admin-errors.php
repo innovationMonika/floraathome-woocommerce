@@ -17,8 +17,8 @@ function fah_admin_notice() {
  <p>
   <?php
  printf(
-	__( '%s', 'florahome' ),
-	get_option('fah_full_import_success')
+	esc_html__( '%s', 'florahome' ),
+	esc_html(get_option('fah_full_import_success'))
   );
  ?>
  </p>
@@ -29,8 +29,8 @@ function fah_admin_notice() {
 <div class="notice notice-info is-dismissible">
  <p><?php
         printf(
-        __( '%s', 'florahome' ),
-        get_option('fah_import_success_images')
+        esc_html__( '%s', 'florahome' ),
+        esc_html(get_option('fah_import_success_images'))
         ); ?>
  </p>
 </div>
@@ -43,8 +43,8 @@ function fah_admin_notice() {
 <div class="notice notice-error is-dismissible">
  <p><?php
   printf(
-        __( '%s', 'florahome' ),
-        get_option('fah_full_import_error')
+        esc_html__( '%s', 'florahome' ),
+        esc_html(get_option('fah_full_import_error'))
         );
   ?></p>
 </div>
@@ -60,8 +60,8 @@ function fah_admin_notice() {
 <div class="notice notice-info is-dismissible">
  <p><?php
  printf(
-        __( '%s', 'florahome' ),
-        get_option('fah_download_success_images')
+        esc_html__( '%s', 'florahome' ),
+        esc_html(get_option('fah_download_success_images'))
         );?>
  </p>
 </div>
@@ -73,8 +73,8 @@ function fah_admin_notice() {
 <div class="notice notice-info is-dismissible">
  <p><?php
  printf(
-        __( '%s', 'florahome' ),
-        get_option('fah_full_update_success')
+        esc_html__( '%s', 'florahome' ),
+        esc_html(get_option('fah_full_update_success'))
         );
  ?></p>
 </div>
