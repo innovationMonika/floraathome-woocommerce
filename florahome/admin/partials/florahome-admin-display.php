@@ -39,14 +39,12 @@ function fah_text_admin_email_render() {
 <?php
 }
 function fah_settings_section_callback() {
-    //echo __( 'www.floraathome.nl', 'fah' );
 
 ?>
 <!--<hr>-->
 <?php
 }
 function fah_settings_products_section_callback() {
-    //echo __( 'Settings for importing products', 'fah' );
 
 ?>
 <!--<hr>-->
@@ -54,7 +52,6 @@ function fah_settings_products_section_callback() {
 }
 function fah_settings_orders_section_callback() {
 ?> <div class="flora-header"> <?php
-    //echo __( 'Settings for exporting orders to Flora@home', 'fah' );
 
 ?>
  <!--<hr>-->
@@ -134,7 +131,7 @@ function fah_product_sync_schedule_render() {
     } ?>>Once daily</option>
 </select>
 <div class="helper">Last import run:
- <?php if (!empty($importlastrun)) printf(__( '%s', 'florahome' ),$importlastrun); ?></div>
+ <?php if (!empty($importlastrun)) printf(esc_html__( '%s', 'florahome' ), esc_html($importlastrun)); ?></div>
 <?php
 }
 function fah_check_publish_render() {

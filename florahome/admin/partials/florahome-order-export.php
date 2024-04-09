@@ -13,7 +13,6 @@ function fah_webshop_order_export($order) {
     $options = get_option('fah_settings');
     $apiURL = $options['fah_text_api_url'] ? $options['fah_text_api_url'] : 'https://api.floraathome.nl/v1';
     $apiURL = rtrim($apiURL, '/') . '/';
-    //$defaultAttributes = ['productcode','linnaeusname','description','promotionaltext'];
     if (!isset($options['fah_text_api_token'])) {
         //Implement throw of exception to handle errors
         return array($result, 'API token not set');
@@ -25,7 +24,6 @@ function fah_webshop_order_export($order) {
     } else return array($result, 'Error in export');
     $apitoken = $options['fah_text_api_token'];
     $path = 'orders/create?apitoken=' . $apitoken . '&type=json';
-    //print_r($apiURL.$path);
     if ($orderExportData) {
         $fahpost = wp_remote_post($apiURL . $path, array('method' => 'POST', 'timeout' => 45, 'headers' => array("Content-type" => "application/x-www-form-urlencoded"), 'body' => array('body' => $orderExportData)));
         if (is_wp_error($fahpost)) {
@@ -41,8 +39,6 @@ function fah_webshop_order_export($order) {
             } elseif ($fahbody->error) {
                 foreach ($fahbody->error as $errorvalue) $orderProcess = 'Error: ' . $errorvalue;
                 return array($result, $orderProcess);
-                //error_log(print_r($errorvalue,true));
-
             }
         }
     } else {
@@ -105,7 +101,6 @@ function fah_webshop_order_prepare($order) {
     } else {
         $orderprepare = 'No First Name in order';
         return array($prepare, $orderprepare);
-        //return 'false;'
 
     }
     if ($order->get_shipping_last_name()) {
@@ -122,7 +117,6 @@ function fah_webshop_order_prepare($order) {
     }
     if ($order->get_shipping_address_1() || $order->get_shipping_address_2()) {
         $orderExportObj->street = $order->get_shipping_address_1() . ' ' . $order->get_shipping_address_2();
-        //$orderExportObj->street = $order->get_shipping_address_1() ;
 
     } else {
         $orderprepare = 'No Address in order';
@@ -171,10 +165,8 @@ function fah_webshop_order_prepare($order) {
             $homeAddressOnly = '';
             $sinatureOption = '';
             if (isset($shippingOptions['only_recipient']) && ($shippingOptions['only_recipient'] != 0))
-            //$homeAddressOnly = '_SAO';
             $optionCode = '3385';
             if (isset($shippingOptions['signature']) && ($shippingOptions['signature'] != 0))
-            //$sinatureOption = '_SIG';
             $optionCode = '3189';
             if (isset($shippingOptions['signature']) && ($shippingOptions['signature'])) $optionCode = '3089';
             if (class_exists('WooCommerce_PostNL')) $wooCommPostNlpackages = WooCommerce_PostNL()->export->get_package_type_for_order($order);
@@ -182,7 +174,7 @@ function fah_webshop_order_prepare($order) {
             if ($wooCommPostNlpackages) {
                 if ($wooCommPostNlpackages === 3) $optionCode = '';
                 if ($wooCommPostNlpackages === 2) {
-                    if (strtolower($shippingCountry) === 'nl') $optionCode = '2928'; //return '02928';
+                    if (strtolower($shippingCountry) === 'nl') $optionCode = '2928';
                     else $optionCode = fah_get_outside_nl_shipping($shippingCountry);
                     $orderExportObj->productcodedelivery = $optionCode;
                 }
@@ -219,8 +211,6 @@ function fah_webshop_order_prepare($order) {
     $orderExportJson = json_encode($orderExportObj);
     $prepare = true;
     return array($prepare, $orderExportJson);
-    //return $orderExportJson;
-
 }
 function fah_getpostnlMappingCodes($optionType, $start_time, $end_time, $countryCode) {
     $postnlshippingCode = ['optionCode' => '3085', 'optionchar' => '', 'option' => '', 'deliveryDate' => false];
@@ -248,14 +238,12 @@ function fah_getpostnlMappingCodes($optionType, $start_time, $end_time, $country
             if (strtolower($countryCode) === 'nl') {
                 $postnlshippingCode['optionCode'] = '3533';
             } else
-            //$postnlshippingCode = fah_get_outside_nl_shipping($countryCode);
             $postnlshippingCode['optionCode'] = '';
             break;
         case 5:
             if (strtolower($countryCode) === 'nl') {
                 $postnlshippingCode['optionCode'] = '3533';;
             } else
-            //$postnlshippingCode = fah_get_outside_nl_shipping($countryCode);
             $postnlshippingCode['optionCode'] = '';
             break;
         default:

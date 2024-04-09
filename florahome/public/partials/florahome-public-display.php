@@ -50,13 +50,10 @@ add_action('woocommerce_before_add_to_cart_button', 'fah_add_card_text_field');
  * Validation for custom field
 */
 function fah_fh_card_message_validation() {
-    /*if ( empty( $_REQUEST['card-text-message'] ) ) {
-        wc_add_notice( __( 'Please enter message for card&hellip;', 'woocommerce' ), 'error' );
-        return false;
-    }*/
+
     if (!empty($_REQUEST['card-text-message'])) {
         if (strlen($_REQUEST['card-text-message']) > 1000) {
-            wc_add_notice(__('Card message should be less than 1000 characters&hellip;', 'woocommerce'), 'error');
+            wc_add_notice(esc_html_e('Card message should be less than 1000 characters&hellip;', 'florahome'), 'error');
             return false;
         }
     }
@@ -70,7 +67,6 @@ add_action('woocommerce_add_to_cart_validation', 'fah_fh_card_message_validation
 function fah_save_card_message_field($cart_item_data, $product_id) {
     if (isset($_REQUEST['card-text-message'])) {
         $cart_item_data['card_message_text'] = sanitize_text_field($_REQUEST['card-text-message']);
-        /* below statement make sure every add to cart action as unique line item */
         $cart_item_data['unique_key'] = md5(microtime() . rand());
     }
     return $cart_item_data;
@@ -87,7 +83,7 @@ function fah_render_meta_on_cart_and_checkout($cart_data, $cart_item = null) {
         $custom_items = $cart_data;
     }
     if (isset($cart_item['card_message_text'])) {
-        $custom_items[] = array("name" => __('Message for the card', 'florahome'), "value" => $cart_item['card_message_text']);
+        $custom_items[] = array("name" => esc_html_e('Message for the card', 'florahome'), "value" => esc_html_e($cart_item['card_message_text']));
     }
     return $custom_items;
 }
@@ -97,7 +93,6 @@ add_filter('woocommerce_get_item_data', 'fah_render_meta_on_cart_and_checkout', 
  * add card message in order meta
 */
 function fah_card_message_order_meta_handler($item, $cart_item_key, $values, $order) {
-    //error_log(print_r($order,true));
     if (isset($values['card_message_text'])) {
         $item->update_meta_data('card_message_text', $values['card_message_text']);
     }

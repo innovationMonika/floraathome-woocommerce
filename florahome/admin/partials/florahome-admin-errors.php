@@ -54,7 +54,6 @@ function fah_admin_notice() {
     }
     if (get_option('fah_download_success_images')) {
         $products_pending_check = get_posts(array('post_type' => 'product', 'meta_query' => array(array('key' => 'pending_images', 'compare' => 'EXISTS'))));
-        //$productcount = 0;
         if (count($products_pending_check) > 0) return;
 ?>
 <div class="notice notice-info is-dismissible">

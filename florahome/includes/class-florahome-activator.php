@@ -18,7 +18,7 @@ class fah_Activator {
             if (isset($_GET['activate'])) {
                 unset($_GET['activate']);
             }
-            exit( _e( 'Please install php exif extension to activate this plugin', 'florahome' ) );
+            exit( esc_html_e( 'Please install php exif extension to activate this plugin', 'florahome' ) );
         }
         global $wp_version;
         require_once (ABSPATH . '/wp-admin/includes/plugin.php');
@@ -28,7 +28,7 @@ class fah_Activator {
             if (isset($_GET['activate'])) {
                 unset($_GET['activate']);
             }
-            exit(printf(__( 'Please install WooCommerce Version %s to activate Flora @ home plugin.', 'florahome' ),
+            exit(printf(esc_attr_e( 'Please install WooCommerce Version %s to activate Flora @ home plugin.', 'florahome' ),
 	  FLORAHOME_REQUIRED_WC_VERSION
             ));
 
@@ -39,7 +39,7 @@ class fah_Activator {
             if (isset($_GET['activate'])) {
                 unset($_GET['activate']);
             }
-            exit(_e('Please install php CURL extension to activate this plugin', 'florahome'));
+            exit(esc_html_e('Please install php CURL extension to activate this plugin', 'florahome'));
         }
         $floraProductAttributes = ['fah_potsize', 'fah_height', 'fah_purchaseprice', 'fah_linnaeusname', 'fah_numberperorder', 'fah_specifications', 'fah_grower', 'fah_aboutgrower', 'fah_caretips', 'fah_branches'];
         foreach ($floraProductAttributes as $floraAttribute) {
@@ -53,7 +53,6 @@ class fah_Activator {
 
     private static function fah_process_add_attribute($attribute) {
         global $wpdb;
-        //      check_admin_referer( 'woocommerce-add-new_attribute' );
         if (empty($attribute['attribute_type'])) {
             $attribute['attribute_type'] = 'text';
         }

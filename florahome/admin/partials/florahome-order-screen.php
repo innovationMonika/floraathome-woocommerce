@@ -33,13 +33,13 @@ function fah_add_exportedColumn($column) {
             $fah_order_code = get_post_meta($order_id, 'fah_order_Export_code', true);
             if (empty($fah_order_code)) {
                 echo 'NOT EXPORTED';
-            } else printf(__( '%s', 'florahome' ),$fah_order_code );
+            } else printf(esc_html_e( '%s', 'florahome' ),$fah_order_code );
             break;
         }
     }
     add_filter('bulk_actions-edit-shop_order', 'fah_order_export_bulk'); // edit-shop_order is the screen ID of the orders page
     function fah_order_export_bulk($bulk_actions) {
-        $bulk_actions['fah_orderexport_bulk'] = 'Export to Flora'; // <option value="fah_orderexport_bulk">Export to Flora</option>
+        $bulk_actions['fah_orderexport_bulk'] = 'Export to Flora';
         return $bulk_actions;
     }
     add_action('admin_action_fah_orderexport_bulk', 'fah_order_export_bulk_action'); // admin_action_{action name}
@@ -58,7 +58,6 @@ function fah_add_exportedColumn($column) {
 
         foreach ($orders as $order_id) {
             $order = new WC_Order(sanitize_text_field($order_id));
-            //
             $orderExportStatus = $order->get_meta('fah_orderExport');
             if ($orderExportStatus != 'Exported' && $orderExportStatus != 'processing') {
                 if ($orderExportStatus) update_post_meta($order_id, 'fah_orderExport', 'processing');

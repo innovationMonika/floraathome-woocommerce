@@ -18,11 +18,9 @@ function fah_save_external_files($post_id = 0, $url = null) {
         $url = esc_url($sanitized_url);
     }
     $validLink = fah_checkValidLink($url);
-    //$validLink = true;
     if ($validLink == true) {
         $timeout = 300;
         $tmp = download_url($url, $timeout);
-        //error_log(print_r($tmp,true));
         $emptyFile = false;
         if (is_string($tmp)) {
             $file_array = array();
@@ -42,7 +40,6 @@ function fah_save_external_files($post_id = 0, $url = null) {
             }
             $name = pathinfo($url, PATHINFO_FILENAME) . $fileextension;
             $file_array['name'] = $name;
-            // $file_array['type'] = mime_content_type( $file_array['tmp_name'] );
 
         }
         // If error storing temporarily, unlink
@@ -118,7 +115,6 @@ function fah_check_headers($link) {
 function fah_checkValidLink($link) {
     $file_headers = fah_check_headers($link);
     $headerStatus = trim(preg_replace('/\s\s+/', ' ', $file_headers[0]));
-    //$allow_files = array('HTTP/1.1 200 OK', 'HTTP/1.0 200 OK');
     preg_match('/^HTTP.+\s(\d\d\d)/', $headerStatus, $headerCode);
     if (is_array($headerCode)) {
         if (isset($headerCode[1])) {
@@ -127,7 +123,6 @@ function fah_checkValidLink($link) {
             }
         }
     }
-    //if( in_array( $headerStatus , $allow_files ) && !empty( $file_headers ) && $file_headers['size'] > 1 ) {
     if (!empty($file_headers) && $file_headers['size'] > 1) {
         return true;
     } else {

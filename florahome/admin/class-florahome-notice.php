@@ -24,7 +24,6 @@ class florahome_notices {
         else add_action('admin_notices', array($this, 'fah_render_flora'));
     }
     function fah_render_flora() {
-        //printf( '<div class="updated">%s</div>', $this->_message );
         ?>
 <div class="notice notice-success  is-dismissible">
 
@@ -38,7 +37,6 @@ class florahome_notices {
     }
 
     function fah_render_flora_error() {
-        //printf( '<div class="updated">%s</div>', $this->_message );
         ?>
 <div class="notice notice-error is-dismissible">
 

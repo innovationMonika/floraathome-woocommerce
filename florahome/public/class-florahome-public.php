@@ -25,11 +25,9 @@ class florahome_Public {
         $this->version = $version;
     }
     public function fah_enqueue_styles() {
-        //wp_enqueue_style( $this->florahome, plugin_dir_url( __FILE__ ) . 'css/florahome-public.css', array(), $this->version, 'all' );
 
     }
     public function fah_enqueue_scripts() {
-        //wp_enqueue_script( $this->florahome, plugin_dir_url( __FILE__ ) . 'js/florahome-public.js', array( 'jquery' ), $this->version, false );
 
     }
 }

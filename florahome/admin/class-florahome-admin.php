@@ -42,7 +42,6 @@ class florahome_Admin {
      * @since    1.0.0
      */
     public function fah_enqueue_styles() {
-        //wp_die($this->version);
         wp_enqueue_style($this->florahome, plugin_dir_url(__FILE__) . 'css/florahome-admin.css', array(), $this->version, 'all');
     }
     /**
@@ -52,13 +51,7 @@ class florahome_Admin {
      */
     public function fah_enqueue_scripts() {
         global $post;
-        //if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
         wp_enqueue_script($this->florahome, plugin_dir_url(__FILE__) . 'js/florahome-import.js', array('jquery'), $this->version, false);
-        /*if ( 'product' === $post->post_type ) {
-        wp_enqueue_script( $this->florahome, plugin_dir_url( __FILE__ ) . 'js/florahome-import.js', array( 'jquery' ), $this->version, false );
-        }*/
-        //}
-
     }
     /**
      * Admin menu of the plugin.
@@ -84,30 +77,25 @@ class florahome_Admin {
      * @since    1.0.0
      */
     function fah_settings_init() {
-        //register_setting( 'pluginPage', 'fah_settings' );
         register_setting('pluginPage_general', 'fah_settings');
         register_setting('pluginPage_product', 'fah_settings');
         register_setting('pluginPage_order', 'fah_settings');
-        add_settings_section('fah_pluginPage_section', __('General settings', 'fah'), 'fah_settings_section_callback', 'pluginPage_general');
-        add_settings_field('fah_webshop_ref', __('Webshop Reference name', 'fah'), 'fah_webshop_ref_render', 'pluginPage_general', 'fah_pluginPage_section');
-        add_settings_field('fah_text_api_url', __('API URL', 'fah'), 'fah_text_api_url_render', 'pluginPage_general', 'fah_pluginPage_section');
-        add_settings_field('fah_text_api_token', __('API token', 'fah'), 'fah_text_api_token_render', 'pluginPage_general', 'fah_pluginPage_section');
-        add_settings_field('fah_text_admin_email', __('Admin email', 'fah'), 'fah_text_admin_email_render', 'pluginPage_general', 'fah_pluginPage_section');
-        add_settings_section('fah_pluginPage_products', __('Products import settings', 'fah'), 'fah_settings_products_section_callback', 'pluginPage_product');
-        add_settings_field('fah_select_import_schedule', __('Import Schedule ', 'fah'), 'fah_import_schedule_render', 'pluginPage_product', 'fah_pluginPage_products');
-        add_settings_field('fah_select_sync_schedule', __('Product Sync Schedule ', 'fah'), 'fah_product_sync_schedule_render', 'pluginPage_product', 'fah_pluginPage_products');
-        add_settings_field('fah_check_update_attr', __('Disable update product attributes', 'fah'), 'fah_check_update_attr_render', 'pluginPage_product', 'fah_pluginPage_products');
-        add_settings_field('fah_check_publish', __('Auto publish on webshop', 'fah'), 'fah_check_publish_render', 'pluginPage_product', 'fah_pluginPage_products');
-        add_settings_field('fah_select_publish_price', __('Auto calculate publish price ', 'fah'), 'fah_publish_price_render', 'pluginPage_product', 'fah_pluginPage_products');
-        //$fahOptions = get_option( 'fah_settings' );
-        //if ($fahOptions['fah_select_publish_price'] && !$fahOptions['fah_select_publish_price'] === 'disable')
-        add_settings_field('fah_text_publish_price_value', __('Auto calculate price', 'fah'), 'fah_text_publish_price_value_render', 'pluginPage_product', 'fah_pluginPage_products');
-        add_settings_field('fah_text_outofstock_deleted_product', __('Put deleted products as Out of Stock', 'fah'), 'fah_text_outofstock_deleted_product_render', 'pluginPage_product', 'fah_pluginPage_products');
-        add_settings_section('fah_pluginPage_orders', __('Order export settings', 'fah'), 'fah_settings_orders_section_callback', 'pluginPage_order');
-        add_settings_field('fah_select_export_schedule', __('Export Schedule ', 'fah'), 'fah_export_schedule_render', 'pluginPage_order', 'fah_pluginPage_orders');
-        add_settings_field('fah_select_order_status', __('Export Schedule ', 'fah'), 'fah_order_status_render', 'pluginPage_order', 'fah_pluginPage_orders');
-        //fah_webshop_get_products();
-
+        add_settings_section('fah_pluginPage_section', __('General settings', 'florahome'), 'fah_settings_section_callback', 'pluginPage_general');
+        add_settings_field('fah_webshop_ref', esc_attr__('Webshop Reference name', 'florahome'), 'fah_webshop_ref_render', 'pluginPage_general', 'fah_pluginPage_section');
+        add_settings_field('fah_text_api_url', esc_attr__('API URL', 'florahome'), 'fah_text_api_url_render', 'pluginPage_general', 'fah_pluginPage_section');
+        add_settings_field('fah_text_api_token', esc_attr__('API token', 'florahome'), 'fah_text_api_token_render', 'pluginPage_general', 'fah_pluginPage_section');
+        add_settings_field('fah_text_admin_email', esc_attr__('Admin email', 'florahome'), 'fah_text_admin_email_render', 'pluginPage_general', 'fah_pluginPage_section');
+        add_settings_section('fah_pluginPage_products', esc_attr__('Products import settings', 'florahome'), 'fah_settings_products_section_callback', 'pluginPage_product');
+        add_settings_field('fah_select_import_schedule', esc_attr__('Import Schedule ', 'florahome'), 'fah_import_schedule_render', 'pluginPage_product', 'fah_pluginPage_products');
+        add_settings_field('fah_select_sync_schedule', esc_attr__('Product Sync Schedule ', 'florahome'), 'fah_product_sync_schedule_render', 'pluginPage_product', 'fah_pluginPage_products');
+        add_settings_field('fah_check_update_attr', esc_attr__('Disable update product attributes', 'florahome'), 'fah_check_update_attr_render', 'pluginPage_product', 'fah_pluginPage_products');
+        add_settings_field('fah_check_publish', esc_attr__('Auto publish on webshop', 'florahome'), 'fah_check_publish_render', 'pluginPage_product', 'fah_pluginPage_products');
+        add_settings_field('fah_select_publish_price', esc_attr__('Auto calculate publish price ', 'florahome'), 'fah_publish_price_render', 'pluginPage_product', 'fah_pluginPage_products');
+        add_settings_field('fah_text_publish_price_value', esc_attr__('Auto calculate price', 'florahome'), 'fah_text_publish_price_value_render', 'pluginPage_product', 'fah_pluginPage_products');
+        add_settings_field('fah_text_outofstock_deleted_product', esc_attr__('Put deleted products as Out of Stock', 'florahome'), 'fah_text_outofstock_deleted_product_render', 'pluginPage_product', 'fah_pluginPage_products');
+        add_settings_section('fah_pluginPage_orders', esc_attr__('Order export settings', 'florahome'), 'fah_settings_orders_section_callback', 'pluginPage_order');
+        add_settings_field('fah_select_export_schedule', esc_attr__('Export Schedule ', 'florahome'), 'fah_export_schedule_render', 'pluginPage_order', 'fah_pluginPage_orders');
+        add_settings_field('fah_select_order_status', esc_attr__('Export Schedule ', 'florahome'), 'fah_order_status_render', 'pluginPage_order', 'fah_pluginPage_orders');
     }
     /**
      * Cron export of the order
@@ -169,10 +157,8 @@ class florahome_Admin {
             }
         }
         if (get_option('fah_select_export_run')) {
-            //update_option('fah_select_export_run',date('Y-m-d h:i:s'));
             update_option('fah_select_export_run', current_time('mysql', false));
         } else
-        //add_option('fah_select_export_run', date('Y-m-d h:i:s'),null,false);
         add_option('fah_select_export_run', current_time('mysql', false), "", false);
     }
     /**
@@ -189,10 +175,8 @@ class florahome_Admin {
             $updateProds->sendErrorMail();
         }
         if (get_option('fah_select_import_run')) {
-            //update_option('fah_select_import_run',date('Y-m-d h:i:s'));
             update_option('fah_select_import_run', current_time('mysql', false));
         } else
-        //add_option('fah_select_import_run', date('Y-m-d h:i:s'),null,false);
         add_option('fah_select_import_run', current_time('mysql', false), "", false);
     }
     public function fah_cron_image_import() {
@@ -200,40 +184,17 @@ class florahome_Admin {
         if (!$lastProcessRun) add_option('fah_download_image_cron_run_time', time(), "", false);
         else {
             if ((time() - $lastProcessRun) < 300) {
-                //error_log('Parrallel run');
                 return;
             }
             update_option('fah_download_image_cron_run_time', time());
         }
         $products_pending = get_posts(array('post_type' => 'product', 'posts_per_page' => 15, 'meta_query' => array(array('key' => 'pending_images', 'compare' => 'EXISTS'))));
-        //$productcount = 0;
         $productList = [];
         $calculateTime = true;
         $timeRemaining = 90;
         if (count($products_pending) > 0) {
-            //set_time_limit(90); //If time limit does not work
             set_time_limit(290);
             foreach ($products_pending as $productitem) {
-                /* if there is a restriction when executing the time
-                *
-                $pendingImages = get_post_meta($productitem->ID, 'pending_images');
-                $productcount = count(json_decode($pendingImages));
-                if ($calculateTime) {
-                $starttime = microtime(true);
-                update_product_image($productitem);
-                $timediff = microttime(true) - $starttime;
-                $perItemtime = $timediff/$productcount;
-                $calculateTime = false;
-                $timeRemaining -= $timediff;
-                } else {
-                $estimatedtime = $perItemtime * $productcount ;
-
-
-
-                }*/
-                //Alternate if unlimited time works
-                //error_log('In Product Image Download');
-                //error_log('DOWNLOADING IMAGES'.$productitem->ID);
                 fah_update_product_image($productitem);
             }
             if (!get_option('fah_download_success_images')) add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.', "", false);
@@ -245,18 +206,9 @@ class florahome_Admin {
     public function fah_cron_product_sync() {
         set_time_limit(120);
         $updateProds = fah_webshop_get_products();
-        /*if (!$updateProds->result) {
-
-        //$updateProds->productErr = true;
-        //$updateProds->sendErrorMail();
-
-
-        }*/
         if (get_option('fah_select_sync_run')) {
-            //update_option('fah_select_import_run',date('Y-m-d h:i:s'));
             update_option('fah_select_sync_run', current_time('mysql', false));
         } else
-        //add_option('fah_select_import_run', date('Y-m-d h:i:s'),null,false);
         add_option('fah_select_sync_run', current_time('mysql', false), "", false);
     }
 }

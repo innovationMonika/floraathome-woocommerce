@@ -33,13 +33,10 @@ function fah_webshop_get_products() {
         $totalProducts = count($productsList);
         $floraProductsList = []; //List to Match existing products
         $skippedProducts = 0;
-        //show_progress_import($totalProducts,$importProducts,$skippedProducts);
         if (count($productsList) > 0) {
             foreach ($productsList as $floraProduct) {
-                //$floraProduct = $productsList[0];
                 $floraProductsList[trim($floraProduct->productcode) ] = $floraProduct;
                 if (isset($floraProduct->type)) if ($floraProduct->type === 'card') { // Ignore card type products
-                    //continue;
 
                 }
                 if (empty(wc_get_product_id_by_sku(trim($floraProduct->productcode)))) {
@@ -48,7 +45,6 @@ function fah_webshop_get_products() {
                     $importProducts++;
                 } else {
                     // sync product
-                    //echo 'PRODUCT FOUND'.$floraProduct->productcode;
                     fah_webshop_create_update_product($options, $floraProduct, null, true);
                     $skippedProducts++;
                 }
@@ -60,14 +56,12 @@ function fah_webshop_get_products() {
         if ($importProducts > 0) {
             if (!get_option('fah_import_success_images')) add_option('fah_import_success_images', 'Flora@home: The images of the imported products are getting downloaded in the background.', "", false);
             // Add Cron to download product images
-            // error_log('ADD SCHEDULE');
             if ($time = wp_next_scheduled('task_flora_image_import')) wp_unschedule_event($time, 'task_flora_image_import');
             wp_schedule_event(time(), '5min', 'task_flora_image_import');
         }
         if (!get_option('fah_full_import_success')) add_option('fah_full_import_success', $message, "", false);
     } else {
         // Error in API response implement
-        //print_r($fahResponse->error);
         if (isset($fahResponse->error) && $fahResponse->error) $message = 'Flora@home Product Import Error: ' . $fahResponse->error;
         else $message = 'Flora@home Product Import Error: Incorrect settings, Please check API URL and key.' . json_encode($fahfetch);
         if (!get_option('fah_full_import_error')) add_option('fah_full_import_error', $message, "", false);
@@ -106,7 +100,6 @@ function fah_webshop_create_update_product($options, $floraProduct, $floraWooPro
         $cid = wp_insert_term($floraProduct->category, 'product_cat', array('description' => $floraProduct->category, 'slug' => $floraProduct->category));
         if ($cid && isset($cid->term_id)) $floraWooProduct->set_category_ids(array($cid->term_id));
     }
-    //print_r($floraProduct->aboutgrower);
     $globalattributes = wc_get_attribute_taxonomies();
     $att_products = [];
     $position = 0;
@@ -114,7 +107,6 @@ function fah_webshop_create_update_product($options, $floraProduct, $floraWooPro
         $floraAttribute = new WC_Product_Attribute();
         $floraAttribute->set_id('aboutgrower');
         $floraAttribute->set_name('aboutgrower');
-        //$floraAttribute->set_options()
         $floraAttribute->set_options(array($floraProduct->aboutgrower));
         $floraAttribute->set_visible(0);
         $floraAttribute->set_position($position);
@@ -125,35 +117,28 @@ function fah_webshop_create_update_product($options, $floraProduct, $floraWooPro
         $floraAttribute = new WC_Product_Attribute();
         $floraAttribute->set_id('caretips');
         $floraAttribute->set_name('caretips');
-        //$floraAttribute->set_options()
         $floraAttribute->set_options(array($floraProduct->caretips));
         $floraAttribute->set_visible(0);
         $floraAttribute->set_position($position);
         $floraAttribute->set_variation(0);
         $att_products[] = $floraAttribute;
     }
-    //print_r($globalattributes);
     foreach ($globalattributes as $productAtt) {
         if ($productAtt->attribute_name === 'fah_caretips' || $productAtt->attribute_name === 'fah_aboutgrower') continue;
-        //$attName = $productAtt->attribute_name;
         $attName = substr($productAtt->attribute_name, (strpos($productAtt->attribute_name, '_') + 1));
         if (isset($floraProduct->$attName) && !empty($floraProduct->$attName)) {
             $floraAttribute = new WC_Product_Attribute();
-            //$floraAttribute->set_id()
             $floraAttribute->set_id(wc_attribute_taxonomy_id_by_name('pa_fah_' . $productAtt->attribute_name));
             $floraAttribute->set_name($attName);
-            //$floraAttribute->set_options()
             $floraAttribute->set_options(array($floraProduct->$attName));
             $floraAttribute->set_visible(0);
             $floraAttribute->set_position($position);
             $floraAttribute->set_variation(0);
             $position++;
-            //$floraWooProduct->set_meta_data()
             $att_products[] = $floraAttribute;
         }
     }
-    //print_r($att_products);
-    //die;
+
     $floraWooProduct->set_attributes($att_products);
     $floraWooProduct = fah_product_update_price($floraProduct, $floraWooProduct, $update);
     $imagejson = '';
@@ -190,7 +175,6 @@ function fah_webshop_recent_products_date($daterecent) {
     $options = get_option('fah_settings');
     $fahprocess = new florahome_process();
     if (empty($daterecent)) {
-        // return false
         $fahprocess->result = false;
         $fahprocess->processMessage = 'Incorrect processing date';
         return $fahprocess;
@@ -200,14 +184,12 @@ function fah_webshop_recent_products_date($daterecent) {
     $defaultAttributes = ['productcode', 'linnaeusname', 'description', 'promotionaltext'];
     if (!isset($options['fah_text_api_token'])) {
         //Implement throw of exception to handle errors
-        //return false;
         $fahprocess->result = false;
         $fahprocess->processMessage = 'API Token not set';
         return $fahprocess;
     }
     $apitoken = $options['fah_text_api_token'];
     $path = 'products/recent?apitoken=' . $apitoken . '&fromdt=' . $daterecent . '&type=json';
-    //print_r($apiURL.$path);
     $fahfetch = wp_remote_get($apiURL . $path, ['timeout' => 30]);
     $fahResponse = json_decode(wp_remote_retrieve_body($fahfetch));
     if (isset($fahResponse->success) && $fahResponse->success) {
@@ -276,7 +258,6 @@ function fah_webshop_recent_products_date($daterecent) {
         return $fahprocess;
     } else {
         //Log Error
-        //return false;
         $fahprocess->result = false;
         if (isset($fahResponse->error) && $fahResponse->error) $fahprocess->processMessage = $fahResponse->error;
         else $fahprocess->processMessage = 'Error in processing product updates';
@@ -326,14 +307,7 @@ update_progress(total, imported, skipped);
 }
 function fah_update_product_image($product) {
     $jsonImage = get_post_meta($product->ID, 'pending_images');
-    /*ob_start();
-    var_dump($jsonImage);
-    $out = ob_get_clean();
 
-    $logger = wc_get_logger();
-    $logger->error('IMAGE IMPORT'.$product->ID,array( 'source' => 'FAH' ));
-    $logger->error(strlen( $jsonImage ),array( 'source' => 'FAH' ));
-    $logger->error($out,array( 'source' => 'FAH' ));*/
     if (!$jsonImage) {
         delete_post_meta($product->ID, 'pending_images');
         return;
@@ -342,7 +316,6 @@ function fah_update_product_image($product) {
         delete_post_meta($product->ID, 'pending_images');
         return;
     }
-    //add_post_meta($product->ID, 'download_flora_images', $jsonImage);
     if (is_array($jsonImage)) {
         if (empty($jsonImage[0])) {
             delete_post_meta($product->ID, 'pending_images');
@@ -354,7 +327,6 @@ function fah_update_product_image($product) {
         $imageIds = [];
         $imageErrors = [];
         foreach ($productImages as $productImage) {
-            //error_log(print_r( $productImage, true));
             try {
                 //Check if image already exists
                 $imageUrlData = parse_url($productImage);
@@ -369,7 +341,6 @@ function fah_update_product_image($product) {
                                 } else {
                                     $existingImage = null;
                                 }
-                                // $existingImage = '';//get_page_by_title($fileData['filename'],OBJECT, 'attachment');
                                 if (empty($existingImage)) {
                                     $upload = fah_save_external_files(0, $productImage);
                                     if ($upload['result'] == 'success') {
@@ -401,8 +372,6 @@ function fah_update_product_image($product) {
             }
             catch(\Exception $e) {
                 $imageErrors[] = 'Error while Importing Image : ' . $e->getMessage();
-                //error_log($e->getMessage());
-
             }
         }
         $floraWooProduct = new WC_Product($product->ID);
@@ -415,8 +384,6 @@ function fah_update_product_image($product) {
                 delete_post_meta($product->ID, 'pending_images');
                 if (!get_option('fah_download_success_images')) add_option('fah_download_success_images', 'Flora@home: The images of the imported products are downloaded successfully.', "", false);
             } else delete_post_meta($product->ID, 'pending_images');
-            //$imageIds = json_encode($imageIds);
-            //add_post_meta($product->ID, 'set_flora_images', $imageIds);
 
         }
         if (count($imageErrors) > 0) {
@@ -426,8 +393,7 @@ function fah_update_product_image($product) {
 }
 function fah_daily_product_sync($floraProducts) {
     $deletedProducts = 0;
-    /*if(!count($floraProducts))
-     return $deletedProducts;*/
+
     $products_woo_flora = get_posts(array('post_type' => 'product', 'meta_query' => array(array('key' => '_flora_product', 'compare' => 'EXISTS')), 'posts_per_page' => - 1));
     $options = get_option('fah_settings');
     if ($products_woo_flora && count($products_woo_flora) > 0) {

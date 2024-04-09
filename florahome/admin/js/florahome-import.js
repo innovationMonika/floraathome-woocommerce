@@ -13,7 +13,6 @@
     var updatebutton = "Check Flora updates";
 
     if (0 === $blankslate.length) {
-      //$title_action.after( '<a href="' + woocommerce_admin.urls.export_products + '" class="page-title-action">' + buttonName + '</a>' );
       $title_action.after(
         '<input type="button" id="full-import" class="page-title-action" value="' +
           buttonName +
@@ -27,7 +26,6 @@
       $("#full-import").after(
         '<div id="show-flora-progress" class="flora-progress" style="float:initial; visibility: visible; display: none;"></div>'
       );
-      //$title_action.after( '' );
     } else {
       $title_action.hide();
       $(".woocommerce-BlankState-cta:last").after(
@@ -43,7 +41,6 @@
       };
       $(".spinner").show();
       $.post(ajaxurl, data, function (response) {
-        //alert('Got this from the server: ' + response);
         $(".spinner").hide();
         if (location.href.indexOf("?") === -1) {
           window.location = location.href += "?flora-import=success";
@@ -58,23 +55,14 @@
       $(this).attr("disabled", true);
       $(this).addClass("disabled");
       $(".spinner").show();
-      //$('.spinner').attr("css", "visibility: visible; float: initial");
       var data = {
         action: "flora_ajaxupdate",
       };
       $(".spinner").show();
       $.post(ajaxurl, data, function (response) {
-        loading: true,
-          //alert('Got this from the server: ' + response);
-          $(".spinner").hide();
+        loading: true, $(".spinner").hide();
         location.reload();
       });
-
-      //$(".spinner").attr("style", "visibility: hidden; float: initial");
     });
-
-    function update_progress(totalproducts, productImported, productskipped) {
-      //alert('TEST');
-    }
   });
 })(jQuery);

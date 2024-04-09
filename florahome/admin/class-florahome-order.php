@@ -35,9 +35,6 @@ class florahome_Order {
     public $phone;
     public $email; //Mandatory
     public $orderlines;
-    //public $productcodedelivery;
-    //public $productoptions;
-    //public $deliverydate;
     public function __construct() {
         $this->referenceWebshop = '';
         $this->referenceCustomer = '';
@@ -60,9 +57,5 @@ class florahome_Order {
         $this->phone = '';
         $this->email = ''; //Mandatory
         $this->orderlines = array(); //Mandatory
-        //$this->productoptions = array();
-        //$this->deliverydate = '';
-        //$this->productcodedelivery = '';
-
     }
 }
